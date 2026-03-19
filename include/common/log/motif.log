@@ -1,0 +1,489 @@
+[2026-03-20 01:10:08] [debug] getM4a_float: 解析 wav 为离散浮点数信号
+[2026-03-20 01:11:22] [debug] getM4a_float: 解析 wav 为离散浮点数信号
+[2026-03-20 01:11:38] [debug] Program Start.
+
+[2026-03-20 01:11:38] [debug] getM4a_float: 解析 wav 为离散浮点数信号
+[2026-03-20 01:12:08] [debug] getM4a_float: 解析 wav 为离散浮点数信号
+[2026-03-20 01:12:23] [debug] getM4a_float: 解析 wav 为离散浮点数信号
+[2026-03-20 01:14:07] [debug] getM4a_float: 解析 wav 为离散浮点数信号
+[2026-03-20 01:14:07] [debug] getM4a_float: 解析完毕
+[2026-03-20 01:14:55] [debug] getM4a_float: 解析 wav 为离散浮点数信号
+[2026-03-20 01:14:56] [debug] getM4a_float: 解析完毕
+[2026-03-20 01:17:56] [debug] getM4a_float: 解析 wav 为离散浮点数信号
+[2026-03-20 01:17:56] [debug] getM4a_float: 解析完毕
+[2026-03-20 01:17:56] [debug] downmixToMono: 混单声道完毕
+[2026-03-20 01:17:56] [debug] 音频长度小于一个 frame，暂时无法继续 FFT
+[2026-03-20 01:23:50] [debug] getM4a_float: 解析 wav 为离散浮点数信号
+[2026-03-20 01:23:50] [debug] getM4a_float: 解析完毕
+[2026-03-20 01:26:08] [debug] getM4a_float: 解析 wav 为离散浮点数信号
+[2026-03-20 01:26:09] [debug] getM4a_float: 解析完毕
+[2026-03-20 01:26:09] [debug] prepareMonoFrameForFFT: FFT 输入帧准备
+[2026-03-20 01:27:51] [debug] getM4a_float: 解析 wav 为离散浮点数信号
+[2026-03-20 01:27:51] [debug] getM4a_float: 解析完毕
+[2026-03-20 01:27:51] [debug] prepareMonoFrameForFFT: FFT 输入帧准备
+[2026-03-20 01:34:20] [debug] getM4a_float: 解析 wav 为离散浮点数信号
+[2026-03-20 01:34:20] [debug] getM4a_float: 解析完毕
+[2026-03-20 01:34:20] [debug] prepareMonoFrameForFFT: FFT 输入帧准备
+[2026-03-20 01:34:20] [debug] prepareMonoFrameForFFT: FFT 输入帧准备完成
+[2026-03-20 01:34:20] [debug] computeMagnitudeSpectrum: 计算幅度频谱 
+[2026-03-20 01:39:41] [debug] getM4a_float: 解析 wav 为离散浮点数信号
+[2026-03-20 01:39:41] [debug] getM4a_float: 解析完毕
+[2026-03-20 01:39:41] [debug] prepareMonoFrameForFFT: FFT 输入帧准备
+[2026-03-20 01:39:41] [debug] prepareMonoFrameForFFT: FFT 输入帧准备完成
+[2026-03-20 01:39:41] [debug] computeMagnitudeSpectrum: 计算幅度频谱 
+[2026-03-20 01:44:16] [debug] getM4a_float: 解析 wav 为离散浮点数信号
+[2026-03-20 01:44:16] [debug] getM4a_float: 解析完毕
+[2026-03-20 01:44:16] [debug] prepareMonoFrameForFFT: FFT 输入帧准备
+[2026-03-20 01:44:16] [debug] prepareMonoFrameForFFT: FFT 输入帧准备完成
+[2026-03-20 01:44:16] [debug] computeMagnitudeSpectrum: 计算幅度频谱 
+[2026-03-20 01:44:16] [debug] computeMagnitudeSpectrum: 计算完成 
+[2026-03-20 01:44:16] [debug] computeChromaFromMagnitudeSpectrum: 计算12维 chroma 
+[2026-03-20 01:44:16] [debug] computeChromaFromMagnitudeSpectrum: 计算完成
+[2026-03-20 01:46:51] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 01:46:51] [debug] Step 1: 读取完成
+[2026-03-20 01:46:51] [debug] Step 2: 准备第一帧 FFT 输入
+[2026-03-20 01:46:52] [debug] Step 2: 第一帧准备完成
+[2026-03-20 01:46:52] [debug] Step 3: 计算第一帧的幅度频谱
+[2026-03-20 01:46:52] [debug] Step 3: 幅度频谱计算完成
+[2026-03-20 01:46:52] [debug] Step 4: 计算第一帧的 12 维 chroma
+[2026-03-20 01:46:52] [debug] Step 4: chroma 计算完成
+[2026-03-20 01:46:52] [debug] Step 5: 计算整首音频的 chroma sequence
+[2026-03-20 01:46:52] [debug] Step 5: chroma sequence 计算完成
+[2026-03-20 01:55:00] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 01:55:01] [debug] Step 1: 读取完成
+[2026-03-20 01:55:01] [debug] Step 2: 准备第一帧 FFT 输入
+[2026-03-20 01:55:01] [debug] Step 2: 第一帧准备完成
+[2026-03-20 01:55:01] [debug] Step 3: 计算第一帧的幅度频谱
+[2026-03-20 01:55:01] [debug] Step 3: 幅度频谱计算完成
+[2026-03-20 01:55:01] [debug] Step 4: 计算第一帧的 12 维 chroma
+[2026-03-20 01:55:01] [debug] Step 4: chroma 计算完成
+[2026-03-20 01:55:01] [debug] Step 5: 计算整首音频的 chroma sequence
+[2026-03-20 01:55:02] [debug] Step 5: chroma sequence 计算完成
+[2026-03-20 01:57:32] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 01:57:32] [debug] Step 1: 读取完成
+[2026-03-20 01:57:32] [debug] Step 2: 准备第一帧 FFT 输入
+[2026-03-20 01:57:32] [debug] Step 2: 第一帧准备完成
+[2026-03-20 01:57:32] [debug] Step 3: 计算第一帧的幅度频谱
+[2026-03-20 01:57:32] [debug] Step 3: 幅度频谱计算完成
+[2026-03-20 01:57:32] [debug] Step 4: 计算第一帧的 12 维 chroma
+[2026-03-20 01:57:32] [debug] Step 4: chroma 计算完成
+[2026-03-20 01:57:32] [debug] Step 5: 计算整首音频的 chroma sequence
+[2026-03-20 01:57:33] [debug] Step 5: chroma sequence 计算完成
+[2026-03-20 01:57:52] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 01:57:52] [debug] Step 1: 读取完成
+[2026-03-20 01:57:52] [debug] Step 2: 准备第一帧 FFT 输入
+[2026-03-20 01:57:52] [debug] Step 2: 第一帧准备完成
+[2026-03-20 01:57:52] [debug] Step 3: 计算第一帧的幅度频谱
+[2026-03-20 01:57:52] [debug] Step 3: 幅度频谱计算完成
+[2026-03-20 01:57:52] [debug] Step 4: 计算第一帧的 12 维 chroma
+[2026-03-20 01:57:52] [debug] Step 4: chroma 计算完成
+[2026-03-20 01:57:52] [debug] Step 5: 计算整首音频的 chroma sequence
+[2026-03-20 01:57:53] [debug] Step 5: chroma sequence 计算完成
+[2026-03-20 02:05:52] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 02:05:52] [debug] Step 1: 读取完成
+[2026-03-20 02:05:52] [debug] Step 2: 准备第一帧 FFT 输入
+[2026-03-20 02:05:52] [debug] Step 2: 第一帧准备完成
+[2026-03-20 02:05:52] [debug] Step 3: 计算第一帧的幅度频谱
+[2026-03-20 02:05:52] [debug] Step 3: 幅度频谱计算完成
+[2026-03-20 02:05:52] [debug] Step 4: 计算第一帧的 12 维 chroma
+[2026-03-20 02:05:52] [debug] Step 4: chroma 计算完成
+[2026-03-20 02:05:52] [debug] Step 5: 计算整首音频的 chroma sequence
+[2026-03-20 02:05:53] [debug] Step 5: chroma sequence 计算完成
+[2026-03-20 02:05:53] [debug] Step 6: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 02:05:53] [debug] Step 6: 时间平滑与下采样完成
+[2026-03-20 02:07:07] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 02:07:07] [debug] Step 1: 读取完成
+[2026-03-20 02:07:07] [debug] Step 2: 准备第一帧 FFT 输入
+[2026-03-20 02:07:07] [debug] Step 2: 第一帧准备完成
+[2026-03-20 02:07:07] [debug] Step 3: 计算第一帧的幅度频谱
+[2026-03-20 02:07:07] [debug] Step 3: 幅度频谱计算完成
+[2026-03-20 02:07:07] [debug] Step 4: 计算第一帧的 12 维 chroma
+[2026-03-20 02:07:07] [debug] Step 4: chroma 计算完成
+[2026-03-20 02:07:07] [debug] Step 5: 计算整首音频的 chroma sequence
+[2026-03-20 02:07:08] [debug] Step 5: chroma sequence 计算完成
+[2026-03-20 02:07:08] [debug] Step 6: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 02:07:08] [debug] Step 6: 时间平滑与下采样完成
+[2026-03-20 02:07:08] [debug] Step 7: 计算下采样后的 SSM
+[2026-03-20 02:07:08] [debug] Step 7: SSM 计算完成
+[2026-03-20 02:10:25] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 02:10:25] [debug] Step 1: 读取完成
+[2026-03-20 02:10:25] [debug] Step 2: 准备第一帧 FFT 输入
+[2026-03-20 02:10:25] [debug] Step 2: 第一帧准备完成
+[2026-03-20 02:10:25] [debug] Step 3: 计算第一帧的幅度频谱
+[2026-03-20 02:10:25] [debug] Step 3: 幅度频谱计算完成
+[2026-03-20 02:10:25] [debug] Step 4: 计算第一帧的 12 维 chroma
+[2026-03-20 02:10:25] [debug] Step 4: chroma 计算完成
+[2026-03-20 02:10:25] [debug] Step 5: 计算整首音频的 chroma sequence
+[2026-03-20 02:10:26] [debug] Step 5: chroma sequence 计算完成
+[2026-03-20 02:10:26] [debug] Step 6: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 02:10:26] [debug] Step 6: 时间平滑与下采样完成
+[2026-03-20 02:10:26] [debug] Step 7: 计算下采样后的 SSM
+[2026-03-20 02:10:26] [debug] Step 7: SSM 计算完成
+[2026-03-20 02:10:26] [debug] Step 8: 对 SSM 做 threshold + penalty
+[2026-03-20 02:10:26] [debug] Step 8: threshold + penalty 完成
+[2026-03-20 02:12:11] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 02:12:11] [debug] Step 1: 读取完成
+[2026-03-20 02:12:11] [debug] Step 2: 准备第一帧 FFT 输入
+[2026-03-20 02:12:11] [debug] Step 2: 第一帧准备完成
+[2026-03-20 02:12:11] [debug] Step 3: 计算第一帧的幅度频谱
+[2026-03-20 02:12:11] [debug] Step 3: 幅度频谱计算完成
+[2026-03-20 02:12:11] [debug] Step 4: 计算第一帧的 12 维 chroma
+[2026-03-20 02:12:11] [debug] Step 4: chroma 计算完成
+[2026-03-20 02:12:11] [debug] Step 5: 计算整首音频的 chroma sequence
+[2026-03-20 02:12:12] [debug] Step 5: chroma sequence 计算完成
+[2026-03-20 02:12:12] [debug] Step 6: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 02:12:12] [debug] Step 6: 时间平滑与下采样完成
+[2026-03-20 02:12:12] [debug] Step 7: 计算下采样后的 SSM
+[2026-03-20 02:12:12] [debug] Step 7: SSM 计算完成
+[2026-03-20 02:12:12] [debug] Step 8: 对 SSM 做 threshold + penalty
+[2026-03-20 02:12:12] [debug] Step 8: threshold + penalty 完成
+[2026-03-20 02:13:55] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 02:13:55] [debug] Step 1: 读取完成
+[2026-03-20 02:13:55] [debug] Step 2: 准备第一帧 FFT 输入
+[2026-03-20 02:13:55] [debug] Step 2: 第一帧准备完成
+[2026-03-20 02:13:55] [debug] Step 3: 计算第一帧的幅度频谱
+[2026-03-20 02:13:55] [debug] Step 3: 幅度频谱计算完成
+[2026-03-20 02:13:55] [debug] Step 4: 计算第一帧的 12 维 chroma
+[2026-03-20 02:13:55] [debug] Step 4: chroma 计算完成
+[2026-03-20 02:13:55] [debug] Step 5: 计算整首音频的 chroma sequence
+[2026-03-20 02:13:56] [debug] Step 5: chroma sequence 计算完成
+[2026-03-20 02:13:56] [debug] Step 6: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 02:13:56] [debug] Step 6: 时间平滑与下采样完成
+[2026-03-20 02:13:56] [debug] Step 7: 计算下采样后的 SSM
+[2026-03-20 02:13:56] [debug] Step 7: SSM 计算完成
+[2026-03-20 02:13:56] [debug] Step 8: 对 SSM 做 threshold + penalty
+[2026-03-20 02:13:56] [debug] Step 8: threshold + penalty 完成
+[2026-03-20 02:15:56] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 02:15:57] [debug] Step 1: 读取完成
+[2026-03-20 02:15:57] [debug] Step 2: 准备第一帧 FFT 输入
+[2026-03-20 02:15:57] [debug] Step 2: 第一帧准备完成
+[2026-03-20 02:15:57] [debug] Step 3: 计算第一帧的幅度频谱
+[2026-03-20 02:15:57] [debug] Step 3: 幅度频谱计算完成
+[2026-03-20 02:15:57] [debug] Step 4: 计算第一帧的 12 维 chroma
+[2026-03-20 02:15:57] [debug] Step 4: chroma 计算完成
+[2026-03-20 02:15:57] [debug] Step 5: 计算整首音频的 chroma sequence
+[2026-03-20 02:15:58] [debug] Step 5: chroma sequence 计算完成
+[2026-03-20 02:15:58] [debug] Step 6: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 02:15:58] [debug] Step 6: 时间平滑与下采样完成
+[2026-03-20 02:15:58] [debug] Step 7: 计算下采样后的 SSM
+[2026-03-20 02:15:58] [debug] Step 7: SSM 计算完成
+[2026-03-20 02:15:58] [debug] Step 8: 对 SSM 做 threshold + penalty
+[2026-03-20 02:15:58] [debug] Step 8: threshold + penalty 完成
+[2026-03-20 02:28:29] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 02:28:29] [debug] Step 1: 读取完成
+[2026-03-20 02:28:29] [debug] Step 2: 准备第一帧 FFT 输入
+[2026-03-20 02:28:29] [debug] Step 2: 第一帧准备完成
+[2026-03-20 02:28:29] [debug] Step 3: 计算第一帧的幅度频谱
+[2026-03-20 02:28:29] [debug] Step 3: 幅度频谱计算完成
+[2026-03-20 02:28:29] [debug] Step 4: 计算第一帧的 12 维 chroma
+[2026-03-20 02:28:29] [debug] Step 4: chroma 计算完成
+[2026-03-20 02:28:29] [debug] Step 5: 计算整首音频的 chroma sequence
+[2026-03-20 02:28:30] [debug] Step 5: chroma sequence 计算完成
+[2026-03-20 02:28:30] [debug] Step 6: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 02:28:30] [debug] Step 6: 时间平滑与下采样完成
+[2026-03-20 02:28:30] [debug] Step 7: 计算下采样后的 SSM
+[2026-03-20 02:28:30] [debug] Step 7: SSM 计算完成
+[2026-03-20 02:28:30] [debug] Step 8: 对 SSM 做 threshold + penalty
+[2026-03-20 02:28:30] [debug] Step 8: threshold + penalty 完成
+[2026-03-20 02:28:30] [debug] Step 9: 计算单个 segment 的 accumulated score matrix
+[2026-03-20 02:28:30] [debug] Step 9: accumulated score matrix 计算完成
+[2026-03-20 02:34:56] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 02:34:56] [debug] Step 1: 读取完成
+[2026-03-20 02:34:56] [debug] Step 2: 准备第一帧 FFT 输入
+[2026-03-20 02:34:56] [debug] Step 2: 第一帧准备完成
+[2026-03-20 02:34:56] [debug] Step 3: 计算第一帧的幅度频谱
+[2026-03-20 02:34:56] [debug] Step 3: 幅度频谱计算完成
+[2026-03-20 02:34:56] [debug] Step 4: 计算第一帧的 12 维 chroma
+[2026-03-20 02:34:56] [debug] Step 4: chroma 计算完成
+[2026-03-20 02:34:56] [debug] Step 5: 计算整首音频的 chroma sequence
+[2026-03-20 02:34:57] [debug] Step 5: chroma sequence 计算完成
+[2026-03-20 02:34:57] [debug] Step 6: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 02:34:57] [debug] Step 6: 时间平滑与下采样完成
+[2026-03-20 02:34:57] [debug] Step 7: 计算下采样后的 SSM
+[2026-03-20 02:34:57] [debug] Step 7: SSM 计算完成
+[2026-03-20 02:34:57] [debug] Step 8: 对 SSM 做 threshold + penalty
+[2026-03-20 02:34:57] [debug] Step 8: threshold + penalty 完成
+[2026-03-20 02:34:57] [debug] Step 9: 计算单个 segment 的 accumulated score matrix
+[2026-03-20 02:34:57] [debug] Step 9: accumulated score matrix 计算完成
+[2026-03-20 02:36:35] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 02:36:35] [debug] Step 1: 读取完成
+[2026-03-20 02:36:35] [debug] Step 2: 准备第一帧 FFT 输入
+[2026-03-20 02:36:35] [debug] Step 2: 第一帧准备完成
+[2026-03-20 02:36:35] [debug] Step 3: 计算第一帧的幅度频谱
+[2026-03-20 02:36:35] [debug] Step 3: 幅度频谱计算完成
+[2026-03-20 02:36:35] [debug] Step 4: 计算第一帧的 12 维 chroma
+[2026-03-20 02:36:35] [debug] Step 4: chroma 计算完成
+[2026-03-20 02:36:35] [debug] Step 5: 计算整首音频的 chroma sequence
+[2026-03-20 02:36:36] [debug] Step 5: chroma sequence 计算完成
+[2026-03-20 02:36:36] [debug] Step 6: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 02:36:36] [debug] Step 6: 时间平滑与下采样完成
+[2026-03-20 02:36:36] [debug] Step 7: 计算下采样后的 SSM
+[2026-03-20 02:36:36] [debug] Step 7: SSM 计算完成
+[2026-03-20 02:36:36] [debug] Step 8: 对 SSM 做 threshold + penalty
+[2026-03-20 02:36:36] [debug] Step 8: threshold + penalty 完成
+[2026-03-20 02:36:36] [debug] Step 9: 计算单个 segment 的 accumulated score matrix
+[2026-03-20 02:36:36] [debug] Step 9: accumulated score matrix 计算完成
+[2026-03-20 02:38:33] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 02:38:34] [debug] Step 1: 读取完成
+[2026-03-20 02:38:34] [debug] Step 2: 准备第一帧 FFT 输入
+[2026-03-20 02:38:34] [debug] Step 2: 第一帧准备完成
+[2026-03-20 02:38:34] [debug] Step 3: 计算第一帧的幅度频谱
+[2026-03-20 02:38:34] [debug] Step 3: 幅度频谱计算完成
+[2026-03-20 02:38:34] [debug] Step 4: 计算第一帧的 12 维 chroma
+[2026-03-20 02:38:34] [debug] Step 4: chroma 计算完成
+[2026-03-20 02:38:34] [debug] Step 5: 计算整首音频的 chroma sequence
+[2026-03-20 02:38:35] [debug] Step 5: chroma sequence 计算完成
+[2026-03-20 02:38:35] [debug] Step 6: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 02:38:35] [debug] Step 6: 时间平滑与下采样完成
+[2026-03-20 02:38:35] [debug] Step 7: 计算下采样后的 SSM
+[2026-03-20 02:38:35] [debug] Step 7: SSM 计算完成
+[2026-03-20 02:38:35] [debug] Step 8: 对 SSM 做 threshold + penalty
+[2026-03-20 02:38:35] [debug] Step 8: threshold + penalty 完成
+[2026-03-20 02:38:35] [debug] Step 9: 计算单个 segment 的 accumulated score matrix
+[2026-03-20 02:38:35] [debug] Step 9: accumulated score matrix 计算完成
+[2026-03-20 02:41:19] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 02:41:19] [debug] Step 1: 读取完成
+[2026-03-20 02:41:19] [debug] Step 2: 准备第一帧 FFT 输入
+[2026-03-20 02:41:19] [debug] Step 2: 第一帧准备完成
+[2026-03-20 02:41:19] [debug] Step 3: 计算第一帧的幅度频谱
+[2026-03-20 02:41:19] [debug] Step 3: 幅度频谱计算完成
+[2026-03-20 02:41:19] [debug] Step 4: 计算第一帧的 12 维 chroma
+[2026-03-20 02:41:19] [debug] Step 4: chroma 计算完成
+[2026-03-20 02:41:19] [debug] Step 5: 计算整首音频的 chroma sequence
+[2026-03-20 02:41:20] [debug] Step 5: chroma sequence 计算完成
+[2026-03-20 02:41:20] [debug] Step 6: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 02:41:20] [debug] Step 6: 时间平滑与下采样完成
+[2026-03-20 02:41:20] [debug] Step 7: 计算下采样后的 SSM
+[2026-03-20 02:41:20] [debug] Step 7: SSM 计算完成
+[2026-03-20 02:41:20] [debug] Step 8: 对 SSM 做 threshold + penalty
+[2026-03-20 02:41:20] [debug] Step 8: threshold + penalty 完成
+[2026-03-20 02:41:20] [debug] Step 9: 计算单个 segment 的 accumulated score matrix
+[2026-03-20 02:41:20] [debug] Step 9: accumulated score matrix 计算完成
+[2026-03-20 02:41:20] [debug] Step 10: 计算 normalized score / coverage / fitness
+[2026-03-20 02:41:20] [debug] Step 10: fitness 计算完成
+[2026-03-20 02:46:47] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 02:46:47] [debug] Step 1: 读取完成
+[2026-03-20 02:46:47] [debug] Step 2: 准备第一帧 FFT 输入
+[2026-03-20 02:46:47] [debug] Step 2: 第一帧准备完成
+[2026-03-20 02:46:47] [debug] Step 3: 计算第一帧的幅度频谱
+[2026-03-20 02:46:47] [debug] Step 3: 幅度频谱计算完成
+[2026-03-20 02:46:47] [debug] Step 4: 计算第一帧的 12 维 chroma
+[2026-03-20 02:46:47] [debug] Step 4: chroma 计算完成
+[2026-03-20 02:46:47] [debug] Step 5: 计算整首音频的 chroma sequence
+[2026-03-20 02:46:48] [debug] Step 5: chroma sequence 计算完成
+[2026-03-20 02:46:48] [debug] Step 6: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 02:46:48] [debug] Step 6: 时间平滑与下采样完成
+[2026-03-20 02:46:48] [debug] Step 7: 计算下采样后的 SSM
+[2026-03-20 02:46:48] [debug] Step 7: SSM 计算完成
+[2026-03-20 02:46:48] [debug] Step 8: 对 SSM 做 threshold + penalty
+[2026-03-20 02:46:48] [debug] Step 8: threshold + penalty 完成
+[2026-03-20 02:46:48] [debug] Step 9: 计算单个 segment 的 accumulated score matrix
+[2026-03-20 02:46:48] [debug] Step 9: accumulated score matrix 计算完成
+[2026-03-20 02:46:48] [debug] Step 10: 计算 normalized score / coverage / fitness
+[2026-03-20 02:46:48] [debug] Step 10: fitness 计算完成
+[2026-03-20 02:46:48] [debug] Step 11: 用 evaluateSegment 再算一次同一个 segment
+[2026-03-20 02:46:48] [debug] Step 11: evaluateSegment 验证完成
+[2026-03-20 02:48:44] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 02:48:44] [debug] Step 1: 读取完成
+[2026-03-20 02:48:44] [debug] Step 2: 准备第一帧 FFT 输入
+[2026-03-20 02:48:44] [debug] Step 2: 第一帧准备完成
+[2026-03-20 02:48:44] [debug] Step 3: 计算第一帧的幅度频谱
+[2026-03-20 02:48:44] [debug] Step 3: 幅度频谱计算完成
+[2026-03-20 02:48:44] [debug] Step 4: 计算第一帧的 12 维 chroma
+[2026-03-20 02:48:44] [debug] Step 4: chroma 计算完成
+[2026-03-20 02:48:44] [debug] Step 5: 计算整首音频的 chroma sequence
+[2026-03-20 02:48:45] [debug] Step 5: chroma sequence 计算完成
+[2026-03-20 02:48:45] [debug] Step 6: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 02:48:45] [debug] Step 6: 时间平滑与下采样完成
+[2026-03-20 02:48:45] [debug] Step 7: 计算下采样后的 SSM
+[2026-03-20 02:48:45] [debug] Step 7: SSM 计算完成
+[2026-03-20 02:48:45] [debug] Step 8: 对 SSM 做 threshold + penalty
+[2026-03-20 02:48:45] [debug] Step 8: threshold + penalty 完成
+[2026-03-20 02:48:45] [debug] Step 9: 计算单个 segment 的 accumulated score matrix
+[2026-03-20 02:48:45] [debug] Step 9: accumulated score matrix 计算完成
+[2026-03-20 02:48:45] [debug] Step 10: 计算 normalized score / coverage / fitness
+[2026-03-20 02:48:45] [debug] Step 10: fitness 计算完成
+[2026-03-20 02:48:45] [debug] Step 11: 用 evaluateSegment 再算一次同一个 segment
+[2026-03-20 02:48:45] [debug] Step 11: evaluateSegment 验证完成
+[2026-03-20 02:48:45] [debug] Step 12: 小范围扫描 candidate segments
+[2026-03-20 02:48:48] [debug] Step 12: candidate scan 完成
+[2026-03-20 02:55:24] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 02:55:24] [debug] Step 1: 读取完成
+[2026-03-20 02:55:24] [debug] Step 2: 准备第一帧 FFT 输入
+[2026-03-20 02:55:24] [debug] Step 2: 第一帧准备完成
+[2026-03-20 02:55:24] [debug] Step 3: 计算第一帧的幅度频谱
+[2026-03-20 02:55:24] [debug] Step 3: 幅度频谱计算完成
+[2026-03-20 02:55:24] [debug] Step 4: 计算第一帧的 12 维 chroma
+[2026-03-20 02:55:24] [debug] Step 4: chroma 计算完成
+[2026-03-20 02:55:24] [debug] Step 5: 计算整首音频的 chroma sequence
+[2026-03-20 02:55:25] [debug] Step 5: chroma sequence 计算完成
+[2026-03-20 02:55:25] [debug] Step 6: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 02:55:25] [debug] Step 6: 时间平滑与下采样完成
+[2026-03-20 02:55:25] [debug] Step 7: 计算下采样后的 SSM
+[2026-03-20 02:55:25] [debug] Step 7: SSM 计算完成
+[2026-03-20 02:55:25] [debug] Step 8: 对 SSM 做 threshold + penalty
+[2026-03-20 02:55:25] [debug] Step 8: threshold + penalty 完成
+[2026-03-20 02:55:25] [debug] Step 9: 用 evaluateSegment 验证一个手动测试 segment
+[2026-03-20 02:55:25] [debug] Step 9: evaluateSegment 验证完成
+[2026-03-20 02:55:25] [debug] Step 12: 小范围扫描 candidate segments
+[2026-03-20 02:55:28] [debug] Step 12: candidate scan 完成
+[2026-03-20 02:58:52] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 02:58:52] [debug] Step 1: 读取完成
+[2026-03-20 02:58:52] [debug] Step 2: 准备第一帧 FFT 输入
+[2026-03-20 02:58:52] [debug] Step 2: 第一帧准备完成
+[2026-03-20 02:58:52] [debug] Step 3: 计算第一帧的幅度频谱
+[2026-03-20 02:58:52] [debug] Step 3: 幅度频谱计算完成
+[2026-03-20 02:58:52] [debug] Step 4: 计算第一帧的 12 维 chroma
+[2026-03-20 02:58:52] [debug] Step 4: chroma 计算完成
+[2026-03-20 02:58:52] [debug] Step 5: 计算整首音频的 chroma sequence
+[2026-03-20 02:58:55] [debug] Step 5: chroma sequence 计算完成
+[2026-03-20 02:58:55] [debug] Step 6: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 02:58:55] [debug] Step 6: 时间平滑与下采样完成
+[2026-03-20 02:58:55] [debug] Step 7: 计算下采样后的 SSM
+[2026-03-20 02:58:55] [debug] Step 7: SSM 计算完成
+[2026-03-20 02:58:55] [debug] Step 8: 对 SSM 做 threshold + penalty
+[2026-03-20 02:58:55] [debug] Step 8: threshold + penalty 完成
+[2026-03-20 02:58:56] [debug] Step 9: 用 evaluateSegment 验证一个手动测试 segment
+[2026-03-20 02:58:56] [debug] Step 9: evaluateSegment 验证完成
+[2026-03-20 02:58:56] [debug] Step 12: 小范围扫描 candidate segments
+[2026-03-20 02:58:59] [debug] Step 12: candidate scan 完成
+[2026-03-20 03:03:05] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 03:03:06] [debug] Step 1: 读取完成
+[2026-03-20 03:03:06] [debug] Step 2: 准备第一帧 FFT 输入
+[2026-03-20 03:03:06] [debug] Step 2: 第一帧准备完成
+[2026-03-20 03:03:06] [debug] Step 3: 计算第一帧的幅度频谱
+[2026-03-20 03:03:06] [debug] Step 3: 幅度频谱计算完成
+[2026-03-20 03:03:06] [debug] Step 4: 计算第一帧的 12 维 chroma
+[2026-03-20 03:03:06] [debug] Step 4: chroma 计算完成
+[2026-03-20 03:03:06] [debug] Step 5: 计算整首音频的 chroma sequence
+[2026-03-20 03:03:09] [debug] Step 5: chroma sequence 计算完成
+[2026-03-20 03:03:09] [debug] Step 6: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 03:03:09] [debug] Step 6: 时间平滑与下采样完成
+[2026-03-20 03:03:09] [debug] Step 7: 计算下采样后的 SSM
+[2026-03-20 03:03:09] [debug] Step 7: SSM 计算完成
+[2026-03-20 03:03:09] [debug] Step 8: 对 SSM 做 threshold + penalty
+[2026-03-20 03:03:09] [debug] Step 8: threshold + penalty 完成
+[2026-03-20 03:03:09] [debug] Step 9: 用 evaluateSegment 验证一个手动测试 segment
+[2026-03-20 03:03:09] [debug] Step 9: evaluateSegment 验证完成
+[2026-03-20 03:03:09] [debug] Step 12: 小范围扫描 candidate segments
+[2026-03-20 03:03:16] [debug] Step 12: candidate scan 完成
+[2026-03-20 03:05:56] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 03:05:56] [debug] Step 1: 读取完成
+[2026-03-20 03:05:56] [debug] Step 2: 准备第一帧 FFT 输入
+[2026-03-20 03:05:56] [debug] Step 2: 第一帧准备完成
+[2026-03-20 03:05:56] [debug] Step 3: 计算第一帧的幅度频谱
+[2026-03-20 03:05:56] [debug] Step 3: 幅度频谱计算完成
+[2026-03-20 03:05:56] [debug] Step 4: 计算第一帧的 12 维 chroma
+[2026-03-20 03:05:56] [debug] Step 4: chroma 计算完成
+[2026-03-20 03:05:56] [debug] Step 5: 计算整首音频的 chroma sequence
+[2026-03-20 03:05:59] [debug] Step 5: chroma sequence 计算完成
+[2026-03-20 03:05:59] [debug] Step 6: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 03:05:59] [debug] Step 6: 时间平滑与下采样完成
+[2026-03-20 03:05:59] [debug] Step 7: 计算下采样后的 SSM
+[2026-03-20 03:06:00] [debug] Step 7: SSM 计算完成
+[2026-03-20 03:06:00] [debug] Step 8: 对 SSM 做 threshold + penalty
+[2026-03-20 03:06:00] [debug] Step 8: threshold + penalty 完成
+[2026-03-20 03:06:00] [debug] Step 9: 用 evaluateSegment 验证一个手动测试 segment
+[2026-03-20 03:06:00] [debug] Step 9: evaluateSegment 验证完成
+[2026-03-20 03:06:00] [debug] Step 12: 小范围扫描 candidate segments
+[2026-03-20 03:06:53] [debug] Step 12: candidate scan 完成
+[2026-03-20 03:09:26] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 03:09:26] [debug] Step 1: 读取完成
+[2026-03-20 03:09:26] [debug] Step 2: 准备第一帧 FFT 输入
+[2026-03-20 03:09:26] [debug] Step 2: 第一帧准备完成
+[2026-03-20 03:09:26] [debug] Step 3: 计算第一帧的幅度频谱
+[2026-03-20 03:09:26] [debug] Step 3: 幅度频谱计算完成
+[2026-03-20 03:09:26] [debug] Step 4: 计算第一帧的 12 维 chroma
+[2026-03-20 03:09:26] [debug] Step 4: chroma 计算完成
+[2026-03-20 03:09:26] [debug] Step 5: 计算整首音频的 chroma sequence
+[2026-03-20 03:09:27] [debug] Step 5: chroma sequence 计算完成
+[2026-03-20 03:09:27] [debug] Step 6: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 03:09:27] [debug] Step 6: 时间平滑与下采样完成
+[2026-03-20 03:09:27] [debug] Step 7: 计算下采样后的 SSM
+[2026-03-20 03:09:27] [debug] Step 7: SSM 计算完成
+[2026-03-20 03:09:27] [debug] Step 8: 对 SSM 做 threshold + penalty
+[2026-03-20 03:09:27] [debug] Step 8: threshold + penalty 完成
+[2026-03-20 03:09:27] [debug] Step 9: 用 evaluateSegment 验证一个手动测试 segment
+[2026-03-20 03:09:27] [debug] Step 9: evaluateSegment 验证完成
+[2026-03-20 03:09:27] [debug] Step 12: 小范围扫描 candidate segments
+[2026-03-20 03:09:33] [debug] Step 12: candidate scan 完成
+[2026-03-20 03:13:19] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 03:13:19] [debug] Step 1: 读取完成
+[2026-03-20 03:13:19] [debug] Step 2: 准备第一帧 FFT 输入
+[2026-03-20 03:13:19] [debug] Step 2: 第一帧准备完成
+[2026-03-20 03:13:19] [debug] Step 3: 计算第一帧的幅度频谱
+[2026-03-20 03:13:19] [debug] Step 3: 幅度频谱计算完成
+[2026-03-20 03:13:19] [debug] Step 4: 计算第一帧的 12 维 chroma
+[2026-03-20 03:13:19] [debug] Step 4: chroma 计算完成
+[2026-03-20 03:13:19] [debug] Step 5: 计算整首音频的 chroma sequence
+[2026-03-20 03:13:20] [debug] Step 5: chroma sequence 计算完成
+[2026-03-20 03:13:20] [debug] Step 6: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 03:13:20] [debug] Step 6: 时间平滑与下采样完成
+[2026-03-20 03:13:20] [debug] Step 7: 计算下采样后的 SSM
+[2026-03-20 03:13:20] [debug] Step 7: SSM 计算完成
+[2026-03-20 03:13:20] [debug] Step 8: 对 SSM 做 threshold + penalty
+[2026-03-20 03:13:20] [debug] Step 8: threshold + penalty 完成
+[2026-03-20 03:13:20] [debug] Step 9: 用 evaluateSegment 验证一个手动测试 segment
+[2026-03-20 03:13:20] [debug] Step 9: evaluateSegment 验证完成
+[2026-03-20 03:13:20] [debug] Step 12: 小范围扫描 candidate segments
+[2026-03-20 03:13:26] [debug] Step 12: candidate scan 完成
+[2026-03-20 03:18:07] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 03:18:07] [debug] Step 1: 读取完成
+[2026-03-20 03:18:07] [debug] Step 2: 准备第一帧 FFT 输入
+[2026-03-20 03:18:08] [debug] Step 2: 第一帧准备完成
+[2026-03-20 03:18:08] [debug] Step 3: 计算第一帧的幅度频谱
+[2026-03-20 03:18:08] [debug] Step 3: 幅度频谱计算完成
+[2026-03-20 03:18:08] [debug] Step 4: 计算第一帧的 12 维 chroma
+[2026-03-20 03:18:08] [debug] Step 4: chroma 计算完成
+[2026-03-20 03:18:08] [debug] Step 5: 计算整首音频的 chroma sequence
+[2026-03-20 03:18:10] [debug] Step 5: chroma sequence 计算完成
+[2026-03-20 03:18:10] [debug] Step 6: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 03:18:10] [debug] Step 6: 时间平滑与下采样完成
+[2026-03-20 03:18:10] [debug] Step 7: 计算下采样后的 SSM
+[2026-03-20 03:18:10] [debug] Step 7: SSM 计算完成
+[2026-03-20 03:18:10] [debug] Step 8: 对 SSM 做 threshold + penalty
+[2026-03-20 03:18:10] [debug] Step 8: threshold + penalty 完成
+[2026-03-20 03:18:10] [debug] Step 9: 用 evaluateSegment 验证一个手动测试 segment
+[2026-03-20 03:18:10] [debug] Step 9: evaluateSegment 验证完成
+[2026-03-20 03:18:10] [debug] Step 12: 小范围扫描 candidate segments
+[2026-03-20 03:18:35] [debug] Step 12: candidate scan 完成
+[2026-03-20 03:41:06] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 03:41:07] [debug] Step 1: 读取完成
+[2026-03-20 03:41:07] [debug] Step 2: 准备第一帧 FFT 输入
+[2026-03-20 03:41:07] [debug] Step 2: 第一帧准备完成
+[2026-03-20 03:41:07] [debug] Step 3: 计算第一帧的幅度频谱
+[2026-03-20 03:41:07] [debug] Step 3: 幅度频谱计算完成
+[2026-03-20 03:41:07] [debug] Step 4: 计算第一帧的 12 维 chroma
+[2026-03-20 03:41:07] [debug] Step 4: chroma 计算完成
+[2026-03-20 03:41:07] [debug] Step 5: 计算整首音频的 chroma sequence
+[2026-03-20 03:41:12] [debug] Step 5: chroma sequence 计算完成
+[2026-03-20 03:41:12] [debug] Step 6: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 03:41:12] [debug] Step 6: 时间平滑与下采样完成
+[2026-03-20 03:41:12] [debug] Step 7: 计算下采样后的 SSM
+[2026-03-20 03:41:13] [debug] Step 7: SSM 计算完成
+[2026-03-20 03:41:13] [debug] Step 8: 对 SSM 做 threshold + penalty
+[2026-03-20 03:41:13] [debug] Step 8: threshold + penalty 完成
+[2026-03-20 03:41:13] [debug] Step 9: 用 evaluateSegment 验证一个手动测试 segment
+[2026-03-20 03:41:13] [debug] Step 9: evaluateSegment 验证完成
+[2026-03-20 03:41:13] [debug] Step 12: 小范围扫描 candidate segments
+[2026-03-20 03:42:05] [debug] Step 12: candidate scan 完成
+[2026-03-20 03:50:03] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 03:50:03] [debug] Step 1: 读取完成
+[2026-03-20 03:50:03] [debug] Step 2: 准备第一帧 FFT 输入
+[2026-03-20 03:50:04] [debug] Step 2: 第一帧准备完成
+[2026-03-20 03:50:04] [debug] Step 3: 计算第一帧的幅度频谱
+[2026-03-20 03:50:04] [debug] Step 3: 幅度频谱计算完成
+[2026-03-20 03:50:04] [debug] Step 4: 计算第一帧的 12 维 chroma
+[2026-03-20 03:50:04] [debug] Step 4: chroma 计算完成
+[2026-03-20 03:50:04] [debug] Step 5: 计算整首音频的 chroma sequence
+[2026-03-20 03:50:09] [debug] Step 5: chroma sequence 计算完成
+[2026-03-20 03:50:09] [debug] Step 6: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 03:50:09] [debug] Step 6: 时间平滑与下采样完成
+[2026-03-20 03:50:09] [debug] Step 7: 计算下采样后的 SSM
+[2026-03-20 03:50:09] [debug] Step 7: SSM 计算完成
+[2026-03-20 03:50:09] [debug] Step 8: 对 SSM 做 threshold + penalty
+[2026-03-20 03:50:09] [debug] Step 8: threshold + penalty 完成
+[2026-03-20 03:50:10] [debug] Step 9: 用 evaluateSegment 验证一个手动测试 segment
+[2026-03-20 03:50:10] [debug] Step 9: evaluateSegment 验证完成
+[2026-03-20 03:50:10] [debug] Step 12: 小范围扫描 candidate segments
+[2026-03-20 03:51:01] [debug] Step 12: candidate scan 完成
