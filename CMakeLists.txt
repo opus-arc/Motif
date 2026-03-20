@@ -69,3 +69,7 @@ target_include_directories(
 
 target_link_libraries(Motif PRIVATE spdlog::spdlog)
 
+
+set_target_properties(Motif PROPERTIES
+        OUTPUT_NAME "motif"
+)

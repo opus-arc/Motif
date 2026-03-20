@@ -209,5 +209,14 @@ You may need to configure compiler flags, include paths, and third-party depende
 
 ## License
 
-This project is currently intended for development, experimentation, and research-oriented use.
-Add a formal license file if you plan to publish or distribute it publicly.
+Apache License
+
+## Acknowledgements
+
+This project benefited from the educational resources developed by the International Audio Laboratories Erlangen, in particular the FMP (Fundamentals of Music Processing) notebooks by Meinard Müller and collaborators.
+
+We would like to thank them for their comprehensive tutorial on audio thumbnailing, which combines theoretical explanations with practical implementations:
+
+https://www.audiolabs-erlangen.de/resources/MIR/FMP/C4/C4S3_AudioThumbnailing.html
+
+We also acknowledge the work "Towards Efficient Audio Thumbnailing", which provides important algorithmic insights.
