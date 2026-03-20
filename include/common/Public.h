@@ -184,4 +184,10 @@ struct FitnessResult {
     int pathFamilyLength;
 };
 
+struct FastFitnessResult {
+    Segment segment;
+    float score;
+    float estimatedFitness;
+};
+
 #endif //MUSICCAT_PUBLIC_H

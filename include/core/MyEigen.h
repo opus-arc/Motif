@@ -46,6 +46,9 @@ public:
         const Eigen::MatrixXf &processedSSM,
         const Segment &segment);
 
+    static FastFitnessResult evaluateSegmentFast(const Eigen::MatrixXf& processedSSM,
+                                             const Segment& segment);
+
 };
 
 

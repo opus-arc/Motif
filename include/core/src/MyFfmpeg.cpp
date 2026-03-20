@@ -206,6 +206,118 @@ namespace {
             throw std::runtime_error("Failed to parse channels from ffprobe output: " + output);
         }
     }
+
+    double getAudioDurationSeconds(const std::filesystem::path &audioPath) {
+        std::ostringstream cmd;
+        cmd << "ffprobe -v error "
+            << "-show_entries format=duration "
+            << "-of default=noprint_wrappers=1:nokey=1 "
+            << shellQuote(audioPath.string());
+
+        const std::string output = trimCopy(Cmd::runCmdCapture(cmd.str()));
+        if (output.empty()) {
+            throw std::runtime_error("ffprobe returned empty duration for: " + audioPath.string());
+        }
+
+        try {
+            return std::stod(output);
+        } catch (const std::exception &) {
+            throw std::runtime_error("Failed to parse duration from ffprobe output: " + output);
+        }
+    }
+
+    std::filesystem::path findAudioFileByTitleInFolder(const std::filesystem::path &folderPath,
+                                                       const std::string &title) {
+        if (!std::filesystem::exists(folderPath) || !std::filesystem::is_directory(folderPath)) {
+            return {};
+        }
+
+        static const std::vector<std::string> extensions = {
+            ".m4a", ".mp4", ".flac", ".wav", ".mp3", ".aac", ".aiff", ".aif", ".caf", ".ogg", ".opus"
+        };
+
+        for (const auto &ext: extensions) {
+            const std::filesystem::path candidate = folderPath / (title + ext);
+            if (std::filesystem::exists(candidate) && std::filesystem::is_regular_file(candidate)) {
+                return candidate;
+            }
+        }
+
+        for (const auto &entry: std::filesystem::directory_iterator(folderPath)) {
+            if (!entry.is_regular_file()) {
+                continue;
+            }
+
+            const std::filesystem::path candidate = entry.path();
+            if (candidate.stem() == title) {
+                return candidate;
+            }
+        }
+
+        return {};
+    }
+
+    std::filesystem::path findAudioFileByTitle(const std::string &title) {
+        const std::filesystem::path m4aFolderPath = MyPath::getM4aFolderPath();
+        const std::filesystem::path outputFolderPath = Entity::getOutputFolderPath();
+
+        std::filesystem::path candidate = findAudioFileByTitleInFolder(m4aFolderPath, title);
+        if (!candidate.empty()) {
+            return candidate;
+        }
+
+        candidate = findAudioFileByTitleInFolder(outputFolderPath, title);
+        if (!candidate.empty()) {
+            return candidate;
+        }
+
+        throw std::runtime_error("Audio file does not exist for title: " + title);
+    }
+
+    std::filesystem::path makeTempSiblingPath(const std::filesystem::path &sourcePath,
+                                              const std::string &suffix) {
+        const std::filesystem::path parent = sourcePath.parent_path();
+        const std::string stem = sourcePath.stem().string();
+        const std::string ext = sourcePath.extension().string();
+        const std::filesystem::path basePath = parent / (stem + suffix + ext);
+
+        if (!std::filesystem::exists(basePath)) {
+            return basePath;
+        }
+
+        for (int i = 1; i <= 9999; ++i) {
+            const std::filesystem::path candidate =
+                parent / (stem + suffix + "." + std::to_string(i) + ext);
+            if (!std::filesystem::exists(candidate)) {
+                return candidate;
+            }
+        }
+
+        throw std::runtime_error("Failed to allocate temp sibling path for: " + sourcePath.string());
+    }
+
+    std::filesystem::path makeDerivedSiblingPath(const std::filesystem::path &sourcePath,
+                                                 const std::string &suffix,
+                                                 const std::string &newExtension = "") {
+        const std::filesystem::path parent = sourcePath.parent_path();
+        const std::string stem = sourcePath.stem().string();
+        const std::string ext = newExtension.empty() ? sourcePath.extension().string() : newExtension;
+        const std::filesystem::path basePath = parent / (stem + suffix + ext);
+
+        if (!std::filesystem::exists(basePath)) {
+            return basePath;
+        }
+
+        for (int i = 1; i <= 9999; ++i) {
+            const std::filesystem::path candidate =
+                parent / (stem + suffix + "." + std::to_string(i) + ext);
+            if (!std::filesystem::exists(candidate)) {
+                return candidate;
+            }
+        }
+
+        throw std::runtime_error("Failed to allocate derived sibling path for: " + sourcePath.string());
+    }
 }
 
 void MyFfmpeg::flacConvertedToM4aByFilename(const std::string &title) {
@@ -436,4 +548,92 @@ void MyFfmpeg::organizeAlbums(const std::string &title) {
         std::filesystem::rename(flacPath, flacDestinationPath);
     }
 
+}
+
+void MyFfmpeg::cutTheAudio(const std::string &title, const double startTime, const double endTime) {
+    if (startTime < 0.0) {
+        throw std::runtime_error("startTime must be >= 0 for title: " + title);
+    }
+
+    if (endTime <= startTime) {
+        throw std::runtime_error("endTime must be greater than startTime for title: " + title);
+    }
+
+    const std::filesystem::path sourcePath = findAudioFileByTitle(title);
+    const std::filesystem::path outputPath = makeDerivedSiblingPath(sourcePath, "_cut");
+    const std::filesystem::path tempPath = makeTempSiblingPath(outputPath, ".tmp");
+
+    if (std::filesystem::exists(tempPath)) {
+        std::filesystem::remove(tempPath);
+    }
+
+    std::ostringstream cmd;
+    cmd << "ffmpeg -y -i " << shellQuote(sourcePath.string())
+        << " -ss " << startTime
+        << " -to " << endTime
+        << " -c copy "
+        << shellQuote(tempPath.string());
+
+    Cmd::runCmdCapture(cmd.str());
+
+    std::filesystem::rename(tempPath, outputPath);
+}
+
+void MyFfmpeg::autoConvertedToWavByFileName(const std::string &title) {
+    const std::filesystem::path sourcePath = findAudioFileByTitle(title);
+
+    if (sourcePath.extension() == ".wav") {
+        return;
+    }
+
+    const std::filesystem::path wavPath = sourcePath.parent_path() / (title + ".wav");
+    const std::filesystem::path tempWavPath = makeTempSiblingPath(wavPath, ".tmp");
+
+    if (std::filesystem::exists(tempWavPath)) {
+        std::filesystem::remove(tempWavPath);
+    }
+
+    std::ostringstream cmd;
+    cmd << "ffmpeg -y -i " << shellQuote(sourcePath.string())
+        << " -vn -acodec pcm_s16le "
+        << shellQuote(tempWavPath.string());
+
+    Cmd::runCmdCapture(cmd.str());
+
+    std::filesystem::rename(tempWavPath, wavPath);
+}
+
+void MyFfmpeg::applyFade(const std::string &title, double fadeInSeconds, double fadeOutSeconds) {
+    if (fadeInSeconds < 0.0 || fadeOutSeconds < 0.0) {
+        throw std::runtime_error("Fade seconds must be >= 0 for title: " + title);
+    }
+
+    const std::filesystem::path sourcePath = findAudioFileByTitle(title);
+    const double duration = getAudioDurationSeconds(sourcePath);
+
+    if (fadeInSeconds + fadeOutSeconds > duration) {
+        throw std::runtime_error("Fade duration exceeds audio duration for title: " + title);
+    }
+
+    const double fadeOutStart = duration - fadeOutSeconds;
+    const std::filesystem::path outputPath = makeDerivedSiblingPath(sourcePath, "_fade");
+    const std::filesystem::path tempPath = makeTempSiblingPath(outputPath, ".tmp");
+
+    if (std::filesystem::exists(tempPath)) {
+        std::filesystem::remove(tempPath);
+    }
+
+    std::ostringstream cmd;
+    cmd << "ffmpeg -y -i " << shellQuote(sourcePath.string())
+        << " -af "
+        << shellQuote(
+            "afade=t=in:st=0:d=" + std::to_string(fadeInSeconds) +
+            ",afade=t=out:st=" + std::to_string(fadeOutStart) +
+            ":d=" + std::to_string(fadeOutSeconds)
+        )
+        << " -vn -c:a aac -b:a 256k "
+        << shellQuote(tempPath.string());
+
+    Cmd::runCmdCapture(cmd.str());
+    std::filesystem::rename(tempPath, outputPath);
 }

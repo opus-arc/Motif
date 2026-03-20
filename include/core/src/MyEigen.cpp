@@ -429,3 +429,36 @@ FitnessResult MyEigen::evaluateSegment(const Eigen::MatrixXf& processedSSM,
         pathFamilyLength
     };
 }
+
+FastFitnessResult MyEigen::evaluateSegmentFast(const Eigen::MatrixXf& processedSSM,
+                                               const Segment& segment) {
+    if (processedSSM.rows() == 0 || processedSSM.cols() == 0) {
+        throw std::invalid_argument("processedSSM is empty");
+    }
+
+    if (processedSSM.rows() != processedSSM.cols()) {
+        throw std::invalid_argument("processedSSM must be square");
+    }
+
+    if (segment.start < 0 || segment.end < segment.start || segment.end >= processedSSM.rows()) {
+        throw std::invalid_argument("Invalid segment range");
+    }
+
+    const AccumulatedScoreResult accResult =
+        MyEigen::computeAccumulatedScoreMatrixForSegment(processedSSM, segment);
+
+    const int M = segment.end - segment.start + 1;
+    const int N = processedSSM.rows();
+
+    const float roughNormalizedScore = accResult.score / static_cast<float>(M);
+    const float roughCoveragePrior = static_cast<float>(M) / static_cast<float>(N);
+
+    const float estimatedFitness =
+        0.7f * roughNormalizedScore + 0.3f * roughCoveragePrior;
+
+    return {
+        segment,
+        accResult.score,
+        estimatedFitness
+    };
+}

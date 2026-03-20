@@ -13,6 +13,8 @@
 class MyFfmpeg {
 public:
 
+    static void autoConvertedToWavByFileName(const std::string &title);
+
     static void flacConvertedToM4aByFilename(const std::string& title);
 
     static int getFlacDurationSecondsByFilename(const std::string& title);
@@ -22,6 +24,11 @@ public:
     static int getFlacBitDepthByFilename(const std::string &title);
 
     static void organizeAlbums(const std::string &title);
+
+    static void cutTheAudio(const std::string &title, double startTime, double endTime);
+
+    static void applyFade(const std::string& title, double fadeInSeconds, double fadeOutSeconds);
+
 
     // static M4a decodeM4aToFloatByFilename(const std::string &title);
 };

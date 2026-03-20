@@ -46,6 +46,63 @@ namespace {
         }
         return window;
     }
+
+    void computeMagnitudeSpectrumInPlaceInternal(const std::vector<float>& frame,
+                                                 kiss_fftr_cfg cfg,
+                                                 std::vector<kiss_fft_cpx>& spectrum,
+                                                 std::vector<float>& magnitude) {
+        if (frame.empty() || cfg == nullptr) {
+            magnitude.clear();
+            return;
+        }
+
+        kiss_fftr(cfg, frame.data(), spectrum.data());
+
+        const size_t binCount = magnitude.size();
+        for (size_t k = 0; k < binCount; ++k) {
+            const float re = spectrum[k].r;
+            const float im = spectrum[k].i;
+            magnitude[k] = std::sqrt(re * re + im * im);
+        }
+    }
+
+    void computeChromaFromMagnitudeSpectrumInPlaceInternal(const std::vector<float>& magnitude,
+                                                           const unsigned int sampleRate,
+                                                           const size_t fftSize,
+                                                           std::vector<float>& chroma) {
+        if (magnitude.empty() || sampleRate == 0 || fftSize < 2) {
+            chroma.clear();
+            return;
+        }
+
+        chroma.assign(12, 0.0f);
+
+        for (size_t k = 1; k < magnitude.size(); ++k) {
+            const float freq = static_cast<float>(k) * static_cast<float>(sampleRate) /
+                               static_cast<float>(fftSize);
+
+            if (freq < 27.5f) {
+                continue;
+            }
+
+            const float midi = 69.0f + 12.0f * std::log2(freq / 440.0f);
+            const int roundedMidi = static_cast<int>(std::lround(midi));
+            const int pitchClass = ((roundedMidi % 12) + 12) % 12;
+
+            chroma[static_cast<size_t>(pitchClass)] += magnitude[k];
+        }
+
+        float sum = 0.0f;
+        for (const float value : chroma) {
+            sum += value;
+        }
+
+        if (sum > 0.0f) {
+            for (float& value : chroma) {
+                value /= sum;
+            }
+        }
+    }
 }
 
 std::vector<float> MyFFT::prepareMonoFrameForFFT(const M4a &audio,
@@ -150,26 +207,38 @@ std::vector<std::vector<float>> MyFFT::computeChromaSequence(const M4a &audio,
     }
 
     const std::vector<float> hannWindow = makeHannWindowInternal(fftSize);
+    const size_t spectrumSize = fftSize / 2 + 1;
+    const size_t estimatedFrames = (mono.size() + hopSize - 1) / hopSize;
+
+    kiss_fftr_cfg cfg = kiss_fftr_alloc(static_cast<int>(fftSize), 0, nullptr, nullptr);
+    if (cfg == nullptr) {
+        return {};
+    }
 
     std::vector<std::vector<float>> chromaSequence;
+    chromaSequence.reserve(estimatedFrames);
+
+    std::vector<float> frame(fftSize, 0.0f);
+    std::vector<kiss_fft_cpx> spectrum(spectrumSize);
+    std::vector<float> magnitude(spectrumSize, 0.0f);
+    std::vector<float> chroma(12, 0.0f);
 
     for (size_t frameStart = 0; frameStart < mono.size(); frameStart += hopSize) {
-        std::vector<float> frame(fftSize, 0.0f);
-
         for (size_t i = 0; i < fftSize; ++i) {
             const size_t index = frameStart + i;
             const float sample = index < mono.size() ? mono[index] : 0.0f;
             frame[i] = sample * hannWindow[i];
         }
 
-        const std::vector<float> magnitude = computeMagnitudeSpectrum(frame);
+        computeMagnitudeSpectrumInPlaceInternal(frame, cfg, spectrum, magnitude);
         if (magnitude.empty()) {
             continue;
         }
 
-        const std::vector<float> chroma = computeChromaFromMagnitudeSpectrum(magnitude,
-                                                                             audio.sampleRate,
-                                                                             fftSize);
+        computeChromaFromMagnitudeSpectrumInPlaceInternal(magnitude,
+                                                          audio.sampleRate,
+                                                          fftSize,
+                                                          chroma);
         if (!chroma.empty()) {
             chromaSequence.push_back(chroma);
         }
@@ -179,5 +248,6 @@ std::vector<std::vector<float>> MyFFT::computeChromaSequence(const M4a &audio,
         }
     }
 
+    free(cfg);
     return chromaSequence;
 }

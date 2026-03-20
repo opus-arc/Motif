@@ -6,22 +6,47 @@
 #include "MyEigen.h"
 #include "MyFfmpeg.h"
 #include "MyFFT.h"
+#include <algorithm>
+#include <unordered_set>
+#include <chrono>
 
 int main() {
     std::cout << "Program starts.\n" << std::endl;
+
+    const auto programStartTime = std::chrono::steady_clock::now();
+    auto stepTime = programStartTime;
+
+    const auto printElapsedMs = [&](const char* label) {
+        const auto now = std::chrono::steady_clock::now();
+        const auto stepMs = std::chrono::duration_cast<std::chrono::milliseconds>(now - stepTime).count();
+        const auto totalMs = std::chrono::duration_cast<std::chrono::milliseconds>(now - programStartTime).count();
+
+        std::cout << "[timer] " << label
+                  << " | step: " << stepMs << " ms"
+                  << " | total: " << totalMs << " ms"
+                  << std::endl;
+
+        stepTime = now;
+    };
 
     // ------------------------------------------------------------
     // 0. 初始化日志等公共组件
     // ------------------------------------------------------------
     CommonsInit::TestAllCommons();
+    printElapsedMs("Step 0 完成");
 
     // ------------------------------------------------------------
     // 1. 读取音频文件，拿到原始浮点采样
     // ------------------------------------------------------------
     std::cout << "---------------------------------------------" << std::endl;
     testLog("Step 1: 读取 wav，解析为浮点数离散信号");
-    const M4a wav = MyDrWav::getM4a_float("test");
+
+    std::string title = "'Tis A Pity She Was A Whore";
+
+    MyFfmpeg::autoConvertedToWavByFileName(title); // 自动格式转换
+    const M4a wav = MyDrWav::getM4a_float(title);
     testLog("Step 1: 读取完成");
+    printElapsedMs("Step 1 完成");
 
     // 后面几步会反复用到这两个参数，先集中定义
     constexpr size_t fftSize = 2048;
@@ -30,103 +55,33 @@ int main() {
     constexpr size_t downsampleFactor = 43;
 
     // ------------------------------------------------------------
-    // 2. 准备一帧 FFT 输入：
-    //    多声道 -> 单声道 -> 取一帧 -> 乘 Hann window
+    // 2. 对整首音频逐帧提取 12 维 chroma，作为后续结构分析的基础特征
+    //    输出可以理解为：numFrames x 12
     // ------------------------------------------------------------
     std::cout << "---------------------------------------------" << std::endl;
-    testLog("Step 2: 准备第一帧 FFT 输入");
-    const std::vector<float> frame = MyFFT::prepareMonoFrameForFFT(wav, fftSize, firstFrameStart);
-    std::cout << "frame.size(): " << frame.size() << std::endl;
-    testLog("Step 2: 第一帧准备完成");
-
-    if (frame.empty()) {
-        testLog("Step 2 failed: frame 为空，程序结束");
-        return 1;
-    }
-
-    // ------------------------------------------------------------
-    // 3. 对这一帧做实数 FFT，得到幅度频谱
-    // ------------------------------------------------------------
-    std::cout << "---------------------------------------------" << std::endl;
-    testLog("Step 3: 计算第一帧的幅度频谱");
-    const std::vector<float> magnitude = MyFFT::computeMagnitudeSpectrum(frame);
-    std::cout << "magnitude.size(): " << magnitude.size() << std::endl;
-    for (size_t i = 0; i < 10 && i < magnitude.size(); ++i) {
-        std::cout << "magnitude[" << i << "]: " << magnitude[i] << std::endl;
-    }
-    testLog("Step 3: 幅度频谱计算完成");
-
-    if (magnitude.empty()) {
-        testLog("Step 3 failed: magnitude 为空，程序结束");
-        return 1;
-    }
-
-    // ------------------------------------------------------------
-    // 4. 把这一帧的频谱映射成 12 维 chroma 向量
-    //    这 12 个槽位对应 12 个 pitch class（C 到 B）
-    // ------------------------------------------------------------
-    std::cout << "---------------------------------------------" << std::endl;
-    testLog("Step 4: 计算第一帧的 12 维 chroma");
-    const std::vector<float> chroma = MyFFT::computeChromaFromMagnitudeSpectrum(
-        magnitude,
-        wav.sampleRate,
-        fftSize
-    );
-    std::cout << "chroma.size(): " << chroma.size() << std::endl;
-    for (size_t i = 0; i < chroma.size(); ++i) {
-        std::cout << "chroma[" << i << "]: " << chroma[i] << std::endl;
-    }
-    testLog("Step 4: chroma 计算完成");
-
-    if (chroma.empty()) {
-        testLog("Step 4 failed: chroma 为空，程序结束");
-        return 1;
-    }
-
-    // ------------------------------------------------------------
-    // 5. 对整首音频逐帧重复以上流程，得到 chroma 序列
-    //    输出形状可以理解为：numFrames x 12
-    // ------------------------------------------------------------
-    std::cout << "---------------------------------------------" << std::endl;
-    testLog("Step 5: 计算整首音频的 chroma sequence");
-    const std::vector<std::vector<float> > chromaSequence = MyFFT::computeChromaSequence(
+    testLog("Step 2: 计算整首音频的 chroma sequence");
+    const std::vector<std::vector<float>> chromaSequence = MyFFT::computeChromaSequence(
         wav,
         fftSize,
         hopSize
     );
-    std::cout << "numFrames: " << chromaSequence.size() << std::endl;
 
-    if (!chromaSequence.empty()) {
-        std::cout << "chromaDim: " << chromaSequence[0].size() << std::endl;
-        std::cout << "first frame chroma:" << std::endl;
-        for (size_t i = 0; i < chromaSequence[0].size(); ++i) {
-            std::cout << "  chromaSequence[0][" << i << "]: " << chromaSequence[0][i] << std::endl;
-        }
+    if (chromaSequence.empty()) {
+        testLog("Step 2 failed: chromaSequence 为空，程序结束");
+        return 1;
     }
-    testLog("Step 5: chroma sequence 计算完成");
+
+    std::cout << "numFrames: " << chromaSequence.size() << std::endl;
+    std::cout << "chromaDim: " << chromaSequence[0].size() << std::endl;
+    testLog("Step 2: chroma sequence 计算完成");
+    printElapsedMs("Step 2 完成");
 
     // ------------------------------------------------------------
-    // 当前结果是否正常：
-    // - frame.size() 应该等于 fftSize（这里是 2048）
-    // - magnitude.size() 应该等于 fftSize / 2 + 1（这里是 1025）
-    // - chroma.size() 应该等于 12
-    // - chromaSequence.size() 应该是一个较大的帧数
+    // 3. 对 chroma 序列做时间平滑与下采样
+    //    目标：降低时间分辨率，减少后续 SSM 与扫描阶段的计算量
     // ------------------------------------------------------------
     std::cout << "---------------------------------------------" << std::endl;
-    std::cout << "Summary:" << std::endl;
-    std::cout << "  frame.size() = " << frame.size() << "  (expected: " << fftSize << ")" << std::endl;
-    std::cout << "  magnitude.size() = " << magnitude.size() << "  (expected: " << (fftSize / 2 + 1) << ")" <<
-            std::endl;
-    std::cout << "  chroma.size() = " << chroma.size() << "  (expected: 12)" << std::endl;
-    std::cout << "  chromaSequence.size() = " << chromaSequence.size() << std::endl;
-
-
-    // ------------------------------------------------------------
-    // 6. 先对 chromaMatrix 做时间平滑，再做时间下采样
-    //    目标：把当前很高的帧率，压到更接近论文里适合做结构分析的尺度
-    // ------------------------------------------------------------
-    std::cout << "---------------------------------------------" << std::endl;
-    testLog("Step 6: 对 chromaMatrix 做时间平滑与下采样");
+    testLog("Step 3: 对 chromaMatrix 做时间平滑与下采样");
 
     const Eigen::MatrixXf chromaMatrix =
         MyEigen::convertChromaSequenceToMatrix(chromaSequence);
@@ -137,54 +92,35 @@ int main() {
     const Eigen::MatrixXf downsampledChromaMatrix =
         MyEigen::downsampleFeatureMatrix(smoothedChromaMatrix, downsampleFactor);
 
-    std::cout << "smoothedChromaMatrix.rows(): " << smoothedChromaMatrix.rows() << std::endl;
-    std::cout << "smoothedChromaMatrix.cols(): " << smoothedChromaMatrix.cols() << std::endl;
-    std::cout << "downsampledChromaMatrix.rows(): " << downsampledChromaMatrix.rows() << std::endl;
-    std::cout << "downsampledChromaMatrix.cols(): " << downsampledChromaMatrix.cols() << std::endl;
-
-    testLog("Step 6: 时间平滑与下采样完成");
+    std::cout << "downsampledFrames: " << downsampledChromaMatrix.rows() << std::endl;
+    std::cout << "featureDim: " << downsampledChromaMatrix.cols() << std::endl;
+    testLog("Step 3: 时间平滑与下采样完成");
+    printElapsedMs("Step 3 完成");
 
     // ------------------------------------------------------------
-    // 7. 对下采样后的特征矩阵计算一个小规模 SSM 进行验证
+    // 4. 基于下采样后的 chroma 计算自相似矩阵（SSM）
+    //    这一步会把“时间-特征序列”变成“时间-时间相似关系”
     // ------------------------------------------------------------
     std::cout << "---------------------------------------------" << std::endl;
-    testLog("Step 7: 计算下采样后的 SSM");
+    testLog("Step 4: 计算下采样后的 SSM");
 
     const Eigen::MatrixXf ssm =
-        MyEigen::computeSelfSimilarityMatrix(downsampledChromaMatrix, 772);
+        MyEigen::computeSelfSimilarityMatrix(downsampledChromaMatrix, downsampledChromaMatrix.rows());
 
-    std::cout << "ssm.rows(): " << ssm.rows() << std::endl;
-    std::cout << "ssm.cols(): " << ssm.cols() << std::endl;
-    std::cout << "ssm(0,0): " << ssm(0,0) << std::endl;
-    std::cout << "ssm(0,1): " << ssm(0,1) << std::endl;
-    std::cout << "ssm(1,0): " << ssm(1,0) << std::endl;
-    std::cout << "ssm(1,1): " << ssm(1,1) << std::endl;
-    std::cout << "ssm(0,50): " << ssm(0,50) << std::endl;
-    std::cout << "ssm(0,100): " << ssm(0,100) << std::endl;
-
-    testLog("Step 7: SSM 计算完成");
+    std::cout << "ssmSize: " << ssm.rows() << " x " << ssm.cols() << std::endl;
+    testLog("Step 4: SSM 计算完成");
+    printElapsedMs("Step 4 完成");
 
     // ------------------------------------------------------------
-    // 8. 对 SSM 做 threshold + penalty
-    //    小于 threshold 的位置直接压成 penalty
+    // 5. 对 SSM 做 threshold + penalty
+    //    保留高相似区域，压低弱相似区域，增强重复结构
     // ------------------------------------------------------------
     std::cout << "---------------------------------------------" << std::endl;
-    testLog("Step 8: 对 SSM 做 threshold + penalty");
+    testLog("Step 5: 对 SSM 做 threshold + penalty");
 
     const Eigen::MatrixXf processedSSM =
         MyEigen::thresholdAndPenaltyMatrix(ssm, 0.90f, -2.0f);
 
-    std::cout << "processedSSM.rows(): " << processedSSM.rows() << std::endl;
-    std::cout << "processedSSM.cols(): " << processedSSM.cols() << std::endl;
-    std::cout << "processedSSM(0,0): " << processedSSM(0,0) << std::endl;
-    std::cout << "processedSSM(0,1): " << processedSSM(0,1) << std::endl;
-    std::cout << "processedSSM(1,0): " << processedSSM(1,0) << std::endl;
-    std::cout << "processedSSM(1,1): " << processedSSM(1,1) << std::endl;
-    std::cout << "processedSSM(0,50): " << processedSSM(0,50) << std::endl;
-    std::cout << "processedSSM(0,100): " << processedSSM(0,100) << std::endl;
-    std::cout << "processedSSM(0,200): " << processedSSM(0,200) << std::endl;
-
-    testLog("Step 8: threshold + penalty 完成");
     size_t penaltyCount = 0;
     size_t positiveCount = 0;
     size_t diagonalCount = 0;
@@ -204,27 +140,22 @@ int main() {
         }
     }
 
-    std::cout << "penaltyCount: " << penaltyCount << std::endl;
-    std::cout << "positiveCount: " << positiveCount << std::endl;
-    std::cout << "diagonalCount: " << diagonalCount << std::endl;
-
     const size_t totalEntries =
         static_cast<size_t>(processedSSM.rows()) * static_cast<size_t>(processedSSM.cols());
 
-    std::cout << "totalEntries: " << totalEntries << std::endl;
+    std::cout << "processedSSM size: " << processedSSM.rows() << " x " << processedSSM.cols() << std::endl;
     std::cout << "penaltyRatio: "
               << static_cast<float>(penaltyCount) / static_cast<float>(totalEntries)
               << std::endl;
 
-    std::cout << "Saving matrices to CSV..." << std::endl;
     MyEigen::saveMatrixToCSV(ssm, "ssm_raw.csv");
     MyEigen::saveMatrixToCSV(processedSSM, "ssm_processed.csv");
-    std::cout << "CSV saved." << std::endl;
+    testLog("Step 5: threshold + penalty 完成");
+    printElapsedMs("Step 5 完成");
 
     // ------------------------------------------------------------
-    // 后面所有 segment 都是在“下采样后的时间轴”上定义的。
-    // 这里先准备一个统一的换算工具，把 frame index 转成秒。
-    // 注意：这是近似时间，已经足够拿去试听定位。
+    // 6. 准备时间换算工具
+    //    后面所有 segment 都定义在“下采样后的时间轴”上，需要换算成秒
     // ------------------------------------------------------------
     const float secondsPerProcessedFrame =
         static_cast<float>(hopSize * downsampleFactor) /
@@ -246,88 +177,123 @@ int main() {
         std::cout << label << " duration (sec): " << durationSec << std::endl;
     };
 
-    // ------------------------------------------------------------
-    // 9. 用一个手动挑选的测试 segment，验证 evaluateSegment
-    //    这里不再把所有中间矩阵都打印出来，main 保持精简。
-    // ------------------------------------------------------------
-    std::cout << "---------------------------------------------" << std::endl;
-    testLog("Step 9: 用 evaluateSegment 验证一个手动测试 segment");
-
-    const Segment testSegment{40, 70};
-    const FitnessResult evalResult =
-        MyEigen::evaluateSegment(processedSSM, testSegment);
-
-    std::cout << "evalResult.segment: ["
-              << evalResult.segment.start << ", "
-              << evalResult.segment.end << "]" << std::endl;
-    std::cout << "evalResult.score: " << evalResult.score << std::endl;
-    std::cout << "evalResult.normalizedScore: " << evalResult.normalizedScore << std::endl;
-    std::cout << "evalResult.coverage: " << evalResult.coverage << std::endl;
-    std::cout << "evalResult.normalizedCoverage: " << evalResult.normalizedCoverage << std::endl;
-    std::cout << "evalResult.pathFamilyLength: " << evalResult.pathFamilyLength << std::endl;
-    std::cout << "evalResult.fitness: " << evalResult.fitness << std::endl;
-    printSegmentTimeInfo("testSegment", evalResult.segment);
-
-    testLog("Step 9: evaluateSegment 验证完成");
 
     // ------------------------------------------------------------
-    // 12. 小范围扫描 candidate segments，找当前 fitness 最大的片段
-    //    先不要全局暴力搜索，只在一个可控范围内验证流程
+    // 7. 使用“粗到细”的多层采样策略扫描候选 segment
+    //    论文思路：先在稀疏网格上找高分候选，再只在这些候选附近做细化。
+    //    这样通常能显著减少 evaluateSegment 的调用次数。
     // ------------------------------------------------------------
     std::cout << "---------------------------------------------" << std::endl;
-    testLog("Step 12: 小范围扫描 candidate segments");
+    testLog("Step 7: 使用多层采样扫描 candidate segments");
 
-    const int scanStartMin = 0;
-    const int scanStartMax = processedSSM.rows() - 1;
     const int scanLengthMin = 20;
     const int scanLengthMax = 40;
+    const std::vector<int> gridSteps = {8, 4, 2, 1};
+    constexpr int anchorCount = 64;
+    constexpr int finalAnchorCount = 16;
 
-    bool hasBest = false;
-    FitnessResult bestResult{};
-    int scannedCount = 0;
+    struct CandidateScore {
+        Segment segment;
+        FitnessResult result;
+    };
+
+    std::vector<CandidateScore> evaluatedCandidates;
+    evaluatedCandidates.reserve(4096);
+
+    auto segmentKey = [](const Segment& seg) -> long long {
+        return (static_cast<long long>(seg.start) << 32) |
+               static_cast<unsigned int>(seg.end);
+    };
+
+    std::unordered_set<long long> visitedSegments;
+    visitedSegments.reserve(8192);
+
     int skippedCount = 0;
 
-    for (int start = scanStartMin; start <= scanStartMax; ++start) {
-        for (int length = scanLengthMin; length <= scanLengthMax; ++length) {
-            const int end = start + length - 1;
+    auto tryEvaluateCandidate = [&](const Segment& candidate) {
+        if (candidate.start < 0 || candidate.end >= processedSSM.rows() || candidate.start > candidate.end) {
+            ++skippedCount;
+            return;
+        }
 
-            if (end >= processedSSM.rows()) {
-                ++skippedCount;
-                continue;
-            }
+        const long long key = segmentKey(candidate);
+        if (visitedSegments.find(key) != visitedSegments.end()) {
+            return;
+        }
+        visitedSegments.insert(key);
 
-            const Segment candidate{start, end};
-            const FitnessResult result = MyEigen::evaluateSegment(processedSSM, candidate);
-            ++scannedCount;
+        const FitnessResult result = MyEigen::evaluateSegment(processedSSM, candidate);
+        evaluatedCandidates.push_back(CandidateScore{candidate, result});
+    };
 
-            if (!hasBest || result.fitness > bestResult.fitness) {
-                bestResult = result;
-                hasBest = true;
+    auto collectAnchors = [&](int maxCount) {
+        std::vector<CandidateScore> sorted = evaluatedCandidates;
+        std::sort(sorted.begin(), sorted.end(), [](const CandidateScore& a, const CandidateScore& b) {
+            return a.result.fitness > b.result.fitness;
+        });
+        if (static_cast<int>(sorted.size()) > maxCount) {
+            sorted.resize(maxCount);
+        }
+        return sorted;
+    };
+
+    // Level 1: 在最粗的二维网格上做初筛
+    const int firstGridStep = gridSteps.front();
+    for (int start = 0; start < processedSSM.rows(); start += firstGridStep) {
+        for (int length = scanLengthMin; length <= scanLengthMax; length += firstGridStep) {
+            const Segment candidate{start, start + length - 1};
+            tryEvaluateCandidate(candidate);
+        }
+    }
+
+    // 后续层：只在高分 anchor 的局部邻域内细化
+    for (size_t levelIndex = 1; levelIndex < gridSteps.size(); ++levelIndex) {
+        const int step = gridSteps[levelIndex];
+        const std::vector<CandidateScore> anchors = collectAnchors(finalAnchorCount);
+
+        for (const CandidateScore& anchor : anchors) {
+            for (int deltaStart = -step; deltaStart <= step; deltaStart += step) {
+                for (int deltaLength = -step; deltaLength <= step; deltaLength += step) {
+                    const int refinedStart = anchor.segment.start + deltaStart;
+                    const int refinedLength = (anchor.segment.end - anchor.segment.start + 1) + deltaLength;
+
+                    if (refinedLength < scanLengthMin || refinedLength > scanLengthMax) {
+                        ++skippedCount;
+                        continue;
+                    }
+
+                    const Segment refinedCandidate{refinedStart, refinedStart + refinedLength - 1};
+                    tryEvaluateCandidate(refinedCandidate);
+                }
             }
         }
     }
 
-    std::cout << "scanStart range: [" << scanStartMin << ", " << scanStartMax << "]" << std::endl;
+    bool hasBest = false;
+    FitnessResult bestResult{};
+    for (const CandidateScore& candidate : evaluatedCandidates) {
+        if (!hasBest || candidate.result.fitness > bestResult.fitness) {
+            bestResult = candidate.result;
+            hasBest = true;
+        }
+    }
+
     std::cout << "scanLength range: [" << scanLengthMin << ", " << scanLengthMax << "]" << std::endl;
-    std::cout << "scannedCount: " << scannedCount << std::endl;
+    std::cout << "gridSteps: [";
+    for (size_t i = 0; i < gridSteps.size(); ++i) {
+        std::cout << gridSteps[i];
+        if (i + 1 < gridSteps.size()) {
+            std::cout << ", ";
+        }
+    }
+    std::cout << "]" << std::endl;
+    std::cout << "anchorCount: " << anchorCount << std::endl;
+    std::cout << "evaluatedCandidates: " << evaluatedCandidates.size() << std::endl;
     std::cout << "skippedCount: " << skippedCount << std::endl;
     std::cout << "processedSSM total duration (sec): "
               << frameIndexToSeconds(processedSSM.rows() - 1) << std::endl;
-    std::cout << "bestResult frame count: "
-              << (bestResult.segment.end - bestResult.segment.start + 1) << std::endl;
 
     if (hasBest) {
-        std::cout << "bestResult.segment: ["
-                  << bestResult.segment.start << ", "
-                  << bestResult.segment.end << "]" << std::endl;
-        std::cout << "bestResult.score: " << bestResult.score << std::endl;
-        std::cout << "bestResult.normalizedScore: " << bestResult.normalizedScore << std::endl;
-        std::cout << "bestResult.coverage: " << bestResult.coverage << std::endl;
-        std::cout << "bestResult.normalizedCoverage: " << bestResult.normalizedCoverage << std::endl;
-        std::cout << "bestResult.pathFamilyLength: " << bestResult.pathFamilyLength << std::endl;
-        std::cout << "bestResult.fitness: " << bestResult.fitness << std::endl;
-        std::cout << "bestResult average repetition duration (sec): ";
-
         const AccumulatedScoreResult bestAccResult =
             MyEigen::computeAccumulatedScoreMatrixForSegment(processedSSM, bestResult.segment);
 
@@ -337,41 +303,42 @@ int main() {
         const std::vector<Segment> bestSegmentFamily =
             MyEigen::computeInducedSegmentFamily(bestPathFamily);
 
-        printSegmentTimeInfo("bestResult", bestResult.segment);
-
         float repetitionDurationSum = 0.0f;
-        std::cout << "bestSegmentFamily.size(): " << bestSegmentFamily.size() << std::endl;
-        for (size_t i = 0; i < bestSegmentFamily.size(); ++i) {
-            const Segment& seg = bestSegmentFamily[i];
-            const float startSec = frameIndexToSeconds(seg.start);
-            const float endSec = frameIndexToSeconds(seg.end);
-            const float durationSec = endSec - startSec;
-            repetitionDurationSum += durationSec;
+        for (const Segment& seg : bestSegmentFamily) {
+            repetitionDurationSum += frameIndexToSeconds(seg.end) - frameIndexToSeconds(seg.start);
+        }
 
-            std::cout << "best repetition " << i
-                      << " frame range: [" << seg.start << ", " << seg.end << "]" << std::endl;
-            std::cout << "best repetition " << i
-                      << " time range (sec): [" << startSec << ", " << endSec << "]" << std::endl;
-            std::cout << "best repetition " << i
-                      << " duration (sec): " << durationSec << std::endl;
-        }
-        if (!bestSegmentFamily.empty()) {
-            std::cout << (repetitionDurationSum / static_cast<float>(bestSegmentFamily.size())) << std::endl;
-        } else {
-            std::cout << 0.0f << std::endl;
-        }
+        const float averageRepetitionDuration = bestSegmentFamily.empty()
+            ? 0.0f
+            : repetitionDurationSum / static_cast<float>(bestSegmentFamily.size());
+
+        std::cout << "bestResult.segment: ["
+                  << bestResult.segment.start << ", "
+                  << bestResult.segment.end << "]" << std::endl;
+        std::cout << "bestResult.score: " << bestResult.score << std::endl;
+        std::cout << "bestResult.normalizedScore: " << bestResult.normalizedScore << std::endl;
+        std::cout << "bestResult.coverage: " << bestResult.coverage << std::endl;
+        std::cout << "bestResult.normalizedCoverage: " << bestResult.normalizedCoverage << std::endl;
+        std::cout << "bestResult.pathFamilyLength: " << bestResult.pathFamilyLength << std::endl;
+        std::cout << "bestResult.fitness: " << bestResult.fitness << std::endl;
+        std::cout << "bestResult average repetition duration (sec): "
+                  << averageRepetitionDuration << std::endl;
+        printSegmentTimeInfo("bestResult", bestResult.segment);
+        std::cout << "bestSegmentFamily.size(): " << bestSegmentFamily.size() << std::endl;
 
         const float bestStartSec = frameIndexToSeconds(bestResult.segment.start);
         const float bestEndSec = frameIndexToSeconds(bestResult.segment.end);
-        const float processedTimelineEndSec = frameIndexToSeconds(processedSSM.rows() - 1);
-        std::cout << "bestResult relative position in processed timeline: "
-                  << (bestStartSec / processedTimelineEndSec) << " -> "
-                  << (bestEndSec / processedTimelineEndSec) << std::endl;
+
+        MyFfmpeg::cutTheAudio(title, bestStartSec, bestEndSec);
+        // fadeOut 还是不要太长为好
+        MyFfmpeg::applyFade(title + "_cut", 0.3, 1);
     } else {
-        std::cout << "No valid candidate segment found in scan range." << std::endl;
+        std::cout << "No valid candidate segment found in multi-level scan." << std::endl;
     }
 
-    testLog("Step 12: candidate scan 完成");
+    testLog("Step 7: 多层采样 candidate scan 完成");
+    printElapsedMs("Step 7 完成");
 
+    printElapsedMs("程序结束前收尾完成");
     return 0;
 }
