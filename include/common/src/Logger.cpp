@@ -25,7 +25,6 @@ void Logger::init() {
 
     // Ensure log directory exists
     const auto logDir = MyPath::getLogPath();
-    FileManager::ensure_path(logDir);
 
     auto logFile = (logDir / "motif.log").string();
 

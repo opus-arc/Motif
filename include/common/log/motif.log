@@ -631,3 +631,267 @@
 [2026-03-20 19:35:21] [debug] Step 5: threshold + penalty 完成
 [2026-03-20 19:35:21] [debug] Step 7: 使用多层采样扫描 candidate segments
 [2026-03-20 19:35:22] [debug] Step 7: 多层采样 candidate scan 完成
+[2026-03-20 19:59:30] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 19:59:30] [debug] Step 1: 读取完成
+[2026-03-20 19:59:30] [debug] Step 2: 计算整首音频的 chroma sequence
+[2026-03-20 19:59:32] [debug] Step 2: chroma sequence 计算完成
+[2026-03-20 19:59:32] [debug] Step 3: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 19:59:32] [debug] Step 3: 时间平滑与下采样完成
+[2026-03-20 19:59:32] [debug] Step 4: 计算下采样后的 SSM
+[2026-03-20 19:59:32] [debug] Step 4: SSM 计算完成
+[2026-03-20 19:59:32] [debug] Step 5: 对 SSM 做 threshold + penalty
+[2026-03-20 19:59:32] [debug] Step 5: threshold + penalty 完成
+[2026-03-20 19:59:32] [debug] Step 7: 使用多层采样扫描 candidate segments
+[2026-03-20 19:59:34] [debug] Step 7: 多层采样 candidate scan 完成
+[2026-03-20 20:00:58] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 20:00:58] [debug] Step 1: 读取完成
+[2026-03-20 20:00:58] [debug] Step 2: 计算整首音频的 chroma sequence
+[2026-03-20 20:01:00] [debug] Step 2: chroma sequence 计算完成
+[2026-03-20 20:01:00] [debug] Step 3: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 20:01:00] [debug] Step 3: 时间平滑与下采样完成
+[2026-03-20 20:01:00] [debug] Step 4: 计算下采样后的 SSM
+[2026-03-20 20:01:00] [debug] Step 4: SSM 计算完成
+[2026-03-20 20:01:00] [debug] Step 5: 对 SSM 做 threshold + penalty
+[2026-03-20 20:01:00] [debug] Step 5: threshold + penalty 完成
+[2026-03-20 20:01:00] [debug] Step 7: 使用多层采样扫描 candidate segments
+[2026-03-20 20:01:02] [debug] Step 7: 多层采样 candidate scan 完成
+[2026-03-20 20:01:59] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 20:02:00] [debug] Step 1: 读取完成
+[2026-03-20 20:02:00] [debug] Step 2: 计算整首音频的 chroma sequence
+[2026-03-20 20:02:02] [debug] Step 2: chroma sequence 计算完成
+[2026-03-20 20:02:02] [debug] Step 3: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 20:02:02] [debug] Step 3: 时间平滑与下采样完成
+[2026-03-20 20:02:02] [debug] Step 4: 计算下采样后的 SSM
+[2026-03-20 20:02:02] [debug] Step 4: SSM 计算完成
+[2026-03-20 20:02:02] [debug] Step 5: 对 SSM 做 threshold + penalty
+[2026-03-20 20:02:02] [debug] Step 5: threshold + penalty 完成
+[2026-03-20 20:02:02] [debug] Step 7: 使用多层采样扫描 candidate segments
+[2026-03-20 20:02:05] [debug] Step 7: 多层采样 candidate scan 完成
+[2026-03-20 21:46:03] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 21:46:04] [debug] Step 1: 读取完成
+[2026-03-20 21:46:04] [debug] Step 2: 计算整首音频的 chroma sequence
+[2026-03-20 21:46:05] [debug] Step 2: chroma sequence 计算完成
+[2026-03-20 21:46:05] [debug] Step 3: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 21:46:05] [debug] Step 3: 时间平滑与下采样完成
+[2026-03-20 21:46:05] [debug] Step 4: 计算下采样后的 SSM
+[2026-03-20 21:46:05] [debug] Step 4: SSM 计算完成
+[2026-03-20 21:46:05] [debug] Step 5: 对 SSM 做 threshold + penalty
+[2026-03-20 21:46:05] [debug] Step 5: threshold + penalty 完成
+[2026-03-20 21:46:05] [debug] Step 7: 使用多层采样扫描 candidate segments
+[2026-03-20 21:46:07] [debug] Step 7: 多层采样 candidate scan 完成
+[2026-03-20 21:49:13] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 21:49:13] [debug] Step 1: 读取完成
+[2026-03-20 21:49:13] [debug] Step 2: 计算整首音频的 chroma sequence
+[2026-03-20 21:49:15] [debug] Step 2: chroma sequence 计算完成
+[2026-03-20 21:49:15] [debug] Step 3: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 21:49:15] [debug] Step 3: 时间平滑与下采样完成
+[2026-03-20 21:49:15] [debug] Step 4: 计算下采样后的 SSM
+[2026-03-20 21:49:15] [debug] Step 4: SSM 计算完成
+[2026-03-20 21:49:15] [debug] Step 5: 对 SSM 做 threshold + penalty
+[2026-03-20 21:49:15] [debug] Step 5: threshold + penalty 完成
+[2026-03-20 21:49:15] [debug] Step 7: 使用多层采样扫描 candidate segments
+[2026-03-20 21:49:17] [debug] Step 7: 多层采样 candidate scan 完成
+[2026-03-20 21:49:23] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 21:49:24] [debug] Step 1: 读取完成
+[2026-03-20 21:49:24] [debug] Step 2: 计算整首音频的 chroma sequence
+[2026-03-20 21:49:25] [debug] Step 2: chroma sequence 计算完成
+[2026-03-20 21:49:25] [debug] Step 3: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 21:49:25] [debug] Step 3: 时间平滑与下采样完成
+[2026-03-20 21:49:25] [debug] Step 4: 计算下采样后的 SSM
+[2026-03-20 21:49:25] [debug] Step 4: SSM 计算完成
+[2026-03-20 21:49:25] [debug] Step 5: 对 SSM 做 threshold + penalty
+[2026-03-20 21:49:25] [debug] Step 5: threshold + penalty 完成
+[2026-03-20 21:49:25] [debug] Step 7: 使用多层采样扫描 candidate segments
+[2026-03-20 21:49:27] [debug] Step 7: 多层采样 candidate scan 完成
+[2026-03-20 21:51:55] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 21:51:56] [debug] Step 1: 读取完成
+[2026-03-20 21:51:56] [debug] Step 2: 计算整首音频的 chroma sequence
+[2026-03-20 21:51:57] [debug] Step 2: chroma sequence 计算完成
+[2026-03-20 21:51:57] [debug] Step 3: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 21:51:57] [debug] Step 3: 时间平滑与下采样完成
+[2026-03-20 21:51:57] [debug] Step 4: 计算下采样后的 SSM
+[2026-03-20 21:51:57] [debug] Step 4: SSM 计算完成
+[2026-03-20 21:51:57] [debug] Step 5: 对 SSM 做 threshold + penalty
+[2026-03-20 21:51:57] [debug] Step 5: threshold + penalty 完成
+[2026-03-20 21:51:57] [debug] Step 7: 使用多层采样扫描 candidate segments
+[2026-03-20 21:51:59] [debug] Step 7: 多层采样 candidate scan 完成
+[2026-03-20 21:55:24] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 21:55:24] [debug] Step 1: 读取完成
+[2026-03-20 21:55:24] [debug] Step 2: 计算整首音频的 chroma sequence
+[2026-03-20 21:55:26] [debug] Step 2: chroma sequence 计算完成
+[2026-03-20 21:55:26] [debug] Step 3: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 21:55:26] [debug] Step 3: 时间平滑与下采样完成
+[2026-03-20 21:55:26] [debug] Step 4: 计算下采样后的 SSM
+[2026-03-20 21:55:26] [debug] Step 4: SSM 计算完成
+[2026-03-20 21:55:26] [debug] Step 5: 对 SSM 做 threshold + penalty
+[2026-03-20 21:55:26] [debug] Step 5: threshold + penalty 完成
+[2026-03-20 21:55:26] [debug] Step 7: 使用多层采样扫描 candidate segments
+[2026-03-20 21:55:27] [debug] Step 7: 多层采样 candidate scan 完成
+[2026-03-20 21:55:42] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 21:55:42] [debug] Step 1: 读取完成
+[2026-03-20 21:55:42] [debug] Step 2: 计算整首音频的 chroma sequence
+[2026-03-20 21:55:44] [debug] Step 2: chroma sequence 计算完成
+[2026-03-20 21:55:44] [debug] Step 3: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 21:55:44] [debug] Step 3: 时间平滑与下采样完成
+[2026-03-20 21:55:44] [debug] Step 4: 计算下采样后的 SSM
+[2026-03-20 21:55:44] [debug] Step 4: SSM 计算完成
+[2026-03-20 21:55:44] [debug] Step 5: 对 SSM 做 threshold + penalty
+[2026-03-20 21:55:44] [debug] Step 5: threshold + penalty 完成
+[2026-03-20 21:55:44] [debug] Step 7: 使用多层采样扫描 candidate segments
+[2026-03-20 21:55:45] [debug] Step 7: 多层采样 candidate scan 完成
+[2026-03-20 21:56:11] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 21:56:11] [debug] Step 1: 读取完成
+[2026-03-20 21:56:11] [debug] Step 2: 计算整首音频的 chroma sequence
+[2026-03-20 21:56:12] [debug] Step 2: chroma sequence 计算完成
+[2026-03-20 21:56:12] [debug] Step 3: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 21:56:13] [debug] Step 3: 时间平滑与下采样完成
+[2026-03-20 21:56:13] [debug] Step 4: 计算下采样后的 SSM
+[2026-03-20 21:56:13] [debug] Step 4: SSM 计算完成
+[2026-03-20 21:56:13] [debug] Step 5: 对 SSM 做 threshold + penalty
+[2026-03-20 21:56:13] [debug] Step 5: threshold + penalty 完成
+[2026-03-20 21:56:13] [debug] Step 7: 使用多层采样扫描 candidate segments
+[2026-03-20 21:56:14] [debug] Step 7: 多层采样 candidate scan 完成
+[2026-03-20 21:57:07] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 21:57:08] [debug] Step 1: 读取完成
+[2026-03-20 21:57:08] [debug] Step 2: 计算整首音频的 chroma sequence
+[2026-03-20 21:57:09] [debug] Step 2: chroma sequence 计算完成
+[2026-03-20 21:57:09] [debug] Step 3: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 21:57:09] [debug] Step 3: 时间平滑与下采样完成
+[2026-03-20 21:57:09] [debug] Step 4: 计算下采样后的 SSM
+[2026-03-20 21:57:09] [debug] Step 4: SSM 计算完成
+[2026-03-20 21:57:09] [debug] Step 5: 对 SSM 做 threshold + penalty
+[2026-03-20 21:57:09] [debug] Step 5: threshold + penalty 完成
+[2026-03-20 21:57:09] [debug] Step 7: 使用多层采样扫描 candidate segments
+[2026-03-20 21:57:11] [debug] Step 7: 多层采样 candidate scan 完成
+[2026-03-20 21:58:22] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 21:58:22] [debug] Step 1: 读取完成
+[2026-03-20 21:58:22] [debug] Step 2: 计算整首音频的 chroma sequence
+[2026-03-20 21:58:24] [debug] Step 2: chroma sequence 计算完成
+[2026-03-20 21:58:24] [debug] Step 3: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 21:58:24] [debug] Step 3: 时间平滑与下采样完成
+[2026-03-20 21:58:24] [debug] Step 4: 计算下采样后的 SSM
+[2026-03-20 21:58:24] [debug] Step 4: SSM 计算完成
+[2026-03-20 21:58:24] [debug] Step 5: 对 SSM 做 threshold + penalty
+[2026-03-20 21:58:24] [debug] Step 5: threshold + penalty 完成
+[2026-03-20 21:58:24] [debug] Step 7: 使用多层采样扫描 candidate segments
+[2026-03-20 21:58:25] [debug] Step 7: 多层采样 candidate scan 完成
+[2026-03-20 21:58:43] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 21:58:43] [debug] Step 1: 读取完成
+[2026-03-20 21:58:43] [debug] Step 2: 计算整首音频的 chroma sequence
+[2026-03-20 21:58:44] [debug] Step 2: chroma sequence 计算完成
+[2026-03-20 21:58:44] [debug] Step 3: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 21:58:45] [debug] Step 3: 时间平滑与下采样完成
+[2026-03-20 21:58:45] [debug] Step 4: 计算下采样后的 SSM
+[2026-03-20 21:58:45] [debug] Step 4: SSM 计算完成
+[2026-03-20 21:58:45] [debug] Step 5: 对 SSM 做 threshold + penalty
+[2026-03-20 21:58:45] [debug] Step 5: threshold + penalty 完成
+[2026-03-20 21:58:45] [debug] Step 7: 使用多层采样扫描 candidate segments
+[2026-03-20 21:58:46] [debug] Step 7: 多层采样 candidate scan 完成
+[2026-03-20 22:03:08] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 22:03:08] [debug] Step 1: 读取完成
+[2026-03-20 22:03:08] [debug] Step 2: 计算整首音频的 chroma sequence
+[2026-03-20 22:03:10] [debug] Step 2: chroma sequence 计算完成
+[2026-03-20 22:03:10] [debug] Step 3: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 22:03:10] [debug] Step 3: 时间平滑与下采样完成
+[2026-03-20 22:03:10] [debug] Step 4: 计算下采样后的 SSM
+[2026-03-20 22:03:10] [debug] Step 4: SSM 计算完成
+[2026-03-20 22:03:10] [debug] Step 5: 对 SSM 做 threshold + penalty
+[2026-03-20 22:03:10] [debug] Step 5: threshold + penalty 完成
+[2026-03-20 22:03:10] [debug] Step 7: 使用多层采样扫描 candidate segments
+[2026-03-20 22:03:11] [debug] Step 7: 多层采样 candidate scan 完成
+[2026-03-20 22:06:22] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 22:06:22] [debug] Step 1: 读取完成
+[2026-03-20 22:06:22] [debug] Step 2: 计算整首音频的 chroma sequence
+[2026-03-20 22:06:24] [debug] Step 2: chroma sequence 计算完成
+[2026-03-20 22:06:24] [debug] Step 3: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 22:06:24] [debug] Step 3: 时间平滑与下采样完成
+[2026-03-20 22:06:24] [debug] Step 4: 计算下采样后的 SSM
+[2026-03-20 22:06:24] [debug] Step 4: SSM 计算完成
+[2026-03-20 22:06:24] [debug] Step 5: 对 SSM 做 threshold + penalty
+[2026-03-20 22:06:24] [debug] Step 5: threshold + penalty 完成
+[2026-03-20 22:06:24] [debug] Step 7: 使用多层采样扫描 candidate segments
+[2026-03-20 22:06:25] [debug] Step 7: 多层采样 candidate scan 完成
+[2026-03-20 22:08:02] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 22:08:03] [debug] Step 1: 读取完成
+[2026-03-20 22:08:03] [debug] Step 2: 计算整首音频的 chroma sequence
+[2026-03-20 22:08:04] [debug] Step 2: chroma sequence 计算完成
+[2026-03-20 22:08:04] [debug] Step 3: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 22:08:04] [debug] Step 3: 时间平滑与下采样完成
+[2026-03-20 22:08:04] [debug] Step 4: 计算下采样后的 SSM
+[2026-03-20 22:08:04] [debug] Step 4: SSM 计算完成
+[2026-03-20 22:08:04] [debug] Step 5: 对 SSM 做 threshold + penalty
+[2026-03-20 22:08:04] [debug] Step 5: threshold + penalty 完成
+[2026-03-20 22:08:04] [debug] Step 7: 使用多层采样扫描 candidate segments
+[2026-03-20 22:08:06] [debug] Step 7: 多层采样 candidate scan 完成
+[2026-03-20 22:12:26] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 22:12:26] [debug] Step 1: 读取完成
+[2026-03-20 22:12:26] [debug] Step 2: 计算整首音频的 chroma sequence
+[2026-03-20 22:12:28] [debug] Step 2: chroma sequence 计算完成
+[2026-03-20 22:12:28] [debug] Step 3: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 22:12:28] [debug] Step 3: 时间平滑与下采样完成
+[2026-03-20 22:12:28] [debug] Step 4: 计算下采样后的 SSM
+[2026-03-20 22:12:28] [debug] Step 4: SSM 计算完成
+[2026-03-20 22:12:28] [debug] Step 5: 对 SSM 做 threshold + penalty
+[2026-03-20 22:12:28] [debug] Step 5: threshold + penalty 完成
+[2026-03-20 22:12:28] [debug] Step 7: 使用多层采样扫描 candidate segments
+[2026-03-20 22:12:29] [debug] Step 7: 多层采样 candidate scan 完成
+[2026-03-20 22:12:49] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 22:12:49] [debug] Step 1: 读取完成
+[2026-03-20 22:12:49] [debug] Step 2: 计算整首音频的 chroma sequence
+[2026-03-20 22:12:50] [debug] Step 2: chroma sequence 计算完成
+[2026-03-20 22:12:50] [debug] Step 3: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 22:12:50] [debug] Step 3: 时间平滑与下采样完成
+[2026-03-20 22:12:50] [debug] Step 4: 计算下采样后的 SSM
+[2026-03-20 22:12:51] [debug] Step 4: SSM 计算完成
+[2026-03-20 22:12:51] [debug] Step 5: 对 SSM 做 threshold + penalty
+[2026-03-20 22:12:51] [debug] Step 5: threshold + penalty 完成
+[2026-03-20 22:12:51] [debug] Step 7: 使用多层采样扫描 candidate segments
+[2026-03-20 22:12:52] [debug] Step 7: 多层采样 candidate scan 完成
+[2026-03-20 22:17:25] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 22:17:25] [debug] Step 1: 读取完成
+[2026-03-20 22:17:25] [debug] Step 2: 计算整首音频的 chroma sequence
+[2026-03-20 22:17:26] [debug] Step 2: chroma sequence 计算完成
+[2026-03-20 22:17:26] [debug] Step 3: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 22:17:27] [debug] Step 3: 时间平滑与下采样完成
+[2026-03-20 22:17:27] [debug] Step 4: 计算下采样后的 SSM
+[2026-03-20 22:17:27] [debug] Step 4: SSM 计算完成
+[2026-03-20 22:17:27] [debug] Step 5: 对 SSM 做 threshold + penalty
+[2026-03-20 22:17:27] [debug] Step 5: threshold + penalty 完成
+[2026-03-20 22:17:27] [debug] Step 7: 使用多层采样扫描 candidate segments
+[2026-03-20 22:17:28] [debug] Step 7: 多层采样 candidate scan 完成
+[2026-03-20 22:17:48] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 22:17:49] [debug] Step 1: 读取完成
+[2026-03-20 22:17:49] [debug] Step 2: 计算整首音频的 chroma sequence
+[2026-03-20 22:17:50] [debug] Step 2: chroma sequence 计算完成
+[2026-03-20 22:17:50] [debug] Step 3: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 22:17:50] [debug] Step 3: 时间平滑与下采样完成
+[2026-03-20 22:17:50] [debug] Step 4: 计算下采样后的 SSM
+[2026-03-20 22:17:50] [debug] Step 4: SSM 计算完成
+[2026-03-20 22:17:50] [debug] Step 5: 对 SSM 做 threshold + penalty
+[2026-03-20 22:17:51] [debug] Step 5: threshold + penalty 完成
+[2026-03-20 22:17:51] [debug] Step 7: 使用多层采样扫描 candidate segments
+[2026-03-20 22:17:52] [debug] Step 7: 多层采样 candidate scan 完成
+[2026-03-20 22:30:36] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 22:30:36] [debug] Step 1: 读取完成
+[2026-03-20 22:30:36] [debug] Step 2: 计算整首音频的 chroma sequence
+[2026-03-20 22:30:38] [debug] Step 2: chroma sequence 计算完成
+[2026-03-20 22:30:38] [debug] Step 3: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 22:30:38] [debug] Step 3: 时间平滑与下采样完成
+[2026-03-20 22:30:38] [debug] Step 4: 计算下采样后的 SSM
+[2026-03-20 22:30:38] [debug] Step 4: SSM 计算完成
+[2026-03-20 22:30:38] [debug] Step 5: 对 SSM 做 threshold + penalty
+[2026-03-20 22:30:38] [debug] Step 5: threshold + penalty 完成
+[2026-03-20 22:30:38] [debug] Step 7: 使用多层采样扫描 candidate segments
+[2026-03-20 22:30:40] [debug] Step 7: 多层采样 candidate scan 完成
+[2026-03-20 22:38:52] [debug] Step 1: 读取 wav，解析为浮点数离散信号
+[2026-03-20 22:38:53] [debug] Step 1: 读取完成
+[2026-03-20 22:38:53] [debug] Step 2: 计算整首音频的 chroma sequence
+[2026-03-20 22:38:54] [debug] Step 2: chroma sequence 计算完成
+[2026-03-20 22:38:54] [debug] Step 3: 对 chromaMatrix 做时间平滑与下采样
+[2026-03-20 22:38:54] [debug] Step 3: 时间平滑与下采样完成
+[2026-03-20 22:38:54] [debug] Step 4: 计算下采样后的 SSM
+[2026-03-20 22:38:54] [debug] Step 4: SSM 计算完成
+[2026-03-20 22:38:54] [debug] Step 5: 对 SSM 做 threshold + penalty
+[2026-03-20 22:38:55] [debug] Step 5: threshold + penalty 完成
+[2026-03-20 22:38:55] [debug] Step 7: 使用多层采样扫描 candidate segments
+[2026-03-20 22:38:56] [debug] Step 7: 多层采样 candidate scan 完成

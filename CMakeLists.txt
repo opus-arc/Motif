@@ -7,22 +7,18 @@ add_executable(Motif main.cpp
         include/Motif.cpp
         include/Motif.h
         include/common/Logger.h
-        include/common/Listener.h
         include/common/Cmd.h
         include/common/FileManager.h
         include/common/CommonsInit.h
-        include/common/Entity.h
         include/common/MyPath.h
         include/common/Public.h
         include/common/TypeParser.h
         include/common/src/Cmd.cpp
         include/common/src/MyPath.cpp
-        include/common/src/Entity.cpp
         include/common/src/Logger.cpp
         include/common/src/TypeParser.cpp
         include/common/src/FileManager.cpp
         include/common/src/CommonsInit.cpp
-        include/common/src/Listener.cpp
         external/dr_wav/dr_wav.h
         include/core/src/MyFfmpeg.cpp
         include/core/MyFfmpeg.h

@@ -13,7 +13,6 @@
 #include <stdexcept>
 #include <vector>
 
-#include "Entity.h"
 #include "Cmd.h"
 #include "Logger.h"
 #include "MyPath.h"
@@ -258,15 +257,13 @@ namespace {
     }
 
     std::filesystem::path findAudioFileByTitle(const std::string &title) {
-        const std::filesystem::path m4aFolderPath = MyPath::getM4aFolderPath();
-        const std::filesystem::path outputFolderPath = Entity::getOutputFolderPath();
+        const std::filesystem::path m4aFolderPath = MyPath::getWorkspaceFolderPath();
 
         std::filesystem::path candidate = findAudioFileByTitleInFolder(m4aFolderPath, title);
         if (!candidate.empty()) {
             return candidate;
         }
 
-        candidate = findAudioFileByTitleInFolder(outputFolderPath, title);
         if (!candidate.empty()) {
             return candidate;
         }
@@ -320,235 +317,7 @@ namespace {
     }
 }
 
-void MyFfmpeg::flacConvertedToM4aByFilename(const std::string &title) {
-    const std::filesystem::path flacPath = Entity::getOutputFolderPath() / (title + ".flac");
-    const std::filesystem::path m4aPath = Entity::getOutputFolderPath() / (title + ".m4a");
 
-    if (!std::filesystem::exists(flacPath)) {
-        throw std::runtime_error("FLAC file does not exist: " + flacPath.string());
-    }
-
-    std::ostringstream cmd;
-    cmd << "ffmpeg -y -i " << shellQuote(flacPath.string())
-            << " -vn -c:a aac -b:a 256k "
-            << shellQuote(m4aPath.string());
-
-    Cmd::runCmdCapture(cmd.str());
-
-    testLog("flacConvertedToM4aByFilename: 开始转换音频格式");
-    testLog("flacConvertedToM4aByFilename: 线程: " + title);
-    testLog("flacConvertedToM4aByFilename: flacPath: " + flacPath.string());
-    testLog("flacConvertedToM4aByFilename: m4aPath: " + m4aPath.string());
-
-    // std::cout << "转换 flac 为 m4a： " << std::endl;
-    // std::cout << "flacPath: " << flacPath.string() << "  m4aPath: " << m4aPath.string() << std::endl;
-}
-
-int MyFfmpeg::getFlacDurationSecondsByFilename(const std::string &title) {
-    const std::filesystem::path flacPath = Entity::getOutputFolderPath() / (title + ".flac");
-
-    if (!std::filesystem::exists(flacPath)) {
-        throw std::runtime_error("FLAC file does not exist: " + flacPath.string());
-    }
-
-    std::ostringstream cmd;
-    cmd << "ffprobe -v error "
-            << "-show_entries format=duration "
-            << "-of default=noprint_wrappers=1:nokey=1 "
-            << shellQuote(flacPath.string());
-
-    const std::string output = Cmd::runCmdCapture(cmd.str());
-
-    if (output.empty()) {
-        throw std::runtime_error("ffprobe returned empty duration for: " + flacPath.string());
-    }
-
-    try {
-        const double seconds = std::stod(output);
-        return static_cast<int>(seconds + 0.5);
-    } catch (const std::exception &) {
-        throw std::runtime_error("Failed to parse duration from ffprobe output: " + output);
-    }
-}
-
-int MyFfmpeg::getFlacBitDepthByFilename(const std::string &title) {
-    const std::filesystem::path flacPath = Entity::getOutputFolderPath() / (title + ".flac");
-
-    if (!std::filesystem::exists(flacPath)) {
-        throw std::runtime_error("FLAC file does not exist: " + flacPath.string());
-    }
-
-    return getFlacBitDepth(flacPath);
-}
-
-// M4a MyFfmpeg::decodeM4aToFloatByFilename(const std::string &title) {
-//     const std::filesystem::path m4aFolder = Path::getM4aFolderPath();
-//     const std::filesystem::path m4aPath = m4aFolder / (title + ".m4a");
-//
-//     if (!std::filesystem::exists(m4aPath)) {
-//         throw std::runtime_error("M4A file does not exist: " + m4aPath.string());
-//     }
-//
-//     const double sampleRate = getM4aSampleRate(m4aPath);
-//     const int channels = getM4aChannels(m4aPath);
-//
-//     const std::filesystem::path tempF32Path = makeTempF32Path(m4aFolder, title);
-//
-//     std::ostringstream cmd;
-//     cmd << "ffmpeg -v error -y -i " << shellQuote(m4aPath.string())
-//         << " -vn -f f32le -acodec pcm_f32le "
-//         << shellQuote(tempF32Path.string());
-//
-//     Cmd::runCmdCapture(cmd.str());
-//
-//     std::ifstream in(tempF32Path, std::ios::binary | std::ios::ate);
-//     if (!in) {
-//         throw std::runtime_error("Failed to open decoded float file: " + tempF32Path.string());
-//     }
-//
-//     const std::streamsize byteSize = in.tellg();
-//     if (byteSize < 0) {
-//         in.close();
-//         std::filesystem::remove(tempF32Path);
-//         throw std::runtime_error("Failed to determine decoded float file size: " + tempF32Path.string());
-//     }
-//
-//     if ((byteSize % static_cast<std::streamsize>(sizeof(float))) != 0) {
-//         in.close();
-//         std::filesystem::remove(tempF32Path);
-//         throw std::runtime_error("Decoded float file size is not aligned to float width: " + tempF32Path.string());
-//     }
-//
-//     std::vector<float> samples(
-//         static_cast<std::size_t>(byteSize / static_cast<std::streamsize>(sizeof(float)))
-//     );
-//
-//     in.seekg(0, std::ios::beg);
-//     if (!samples.empty()) {
-//         in.read(reinterpret_cast<char *>(samples.data()), byteSize);
-//         if (!in) {
-//             in.close();
-//             std::filesystem::remove(tempF32Path);
-//             throw std::runtime_error("Failed to read decoded float data from: " + tempF32Path.string());
-//         }
-//     }
-//
-//     in.close();
-//     std::filesystem::remove(tempF32Path);
-//
-//     return M4a{sampleRate, channels, std::move(samples)};
-// }
-
-void MyFfmpeg::applyCover(const std::string &title) {
-    testLog("applyCover: 开始为 m4a 添加封面");
-    testLog("applyCover: 线程: " + title);
-
-    const std::filesystem::path opf = Entity::getOutputFolderPath();
-    const std::filesystem::path m4aPath = opf / (title + ".m4a");
-    const std::filesystem::path coverPath = opf / (title + ".jpg");
-    const std::filesystem::path tempPath = opf / (title + ".cover.tmp.m4a");
-
-    if (!std::filesystem::exists(m4aPath)) {
-        Logger::info(
-            std::string("[MyFfmpeg]: Skip applying cover because M4A file does not exist: ") + m4aPath.string());
-        return;
-    }
-
-    if (!std::filesystem::exists(coverPath)) {
-        Logger::info(
-            std::string("[MyFfmpeg]: Skip applying cover because cover image does not exist: ") + coverPath.string());
-        return;
-    }
-
-    if (std::filesystem::exists(tempPath)) {
-        std::filesystem::remove(tempPath);
-    }
-
-    std::ostringstream cmd;
-    cmd << "ffmpeg -y "
-            << "-i " << shellQuote(m4aPath.string()) << ' '
-            << "-i " << shellQuote(coverPath.string()) << ' '
-            << "-map 0:a:0 -map 1:v:0 "
-            << "-c:a copy "
-            << "-c:v mjpeg "
-            << "-disposition:v:0 attached_pic "
-            << "-metadata:s:v:0 title=" << shellQuote("Cover") << ' '
-            << "-metadata:s:v:0 comment=" << shellQuote("Cover (front)") << ' '
-            << shellQuote(tempPath.string());
-
-    Cmd::runCmdCapture(cmd.str());
-
-    testLog("applyCover: m4aPath: " + m4aPath.string());
-
-    std::filesystem::rename(tempPath, m4aPath);
-    // Logger::info(std::string("[MyFfmpeg]: Attached front cover artwork to ") + m4aPath.string());
-}
-
-void MyFfmpeg::organizeAlbums(const std::string &title) {
-    testLog("organizeAlbums: 开始整理指定的文件");
-    testLog("organizeAlbums: 线程" + title);
-
-    // std::cout << "开始整理指定文件: " << title << std::endl;
-
-    const std::filesystem::path opf = Entity::getOutputFolderPath();
-    const std::filesystem::path libraryRoot = opf / "Mcat Library";
-
-    if (!std::filesystem::exists(opf) || !std::filesystem::is_directory(opf)) {
-        throw std::runtime_error("Output folder does not exist or is not a directory: " + opf.string());
-    }
-
-    if (!std::filesystem::exists(libraryRoot)) {
-        std::filesystem::create_directory(libraryRoot);
-    }
-
-    // 构造目标文件路径
-    const std::filesystem::path m4aPath = opf / (title + ".m4a");
-    const std::filesystem::path flacPath = opf / (title + ".flac");
-
-    // 如果 m4a 不存在，直接退出（核心文件）
-    if (!std::filesystem::exists(m4aPath) || !std::filesystem::is_regular_file(m4aPath)) {
-        throw std::runtime_error("m4a file not found: " + m4aPath.string());
-    }
-
-    // ===== 读取专辑信息 =====
-    const std::string rawAlbumName = getM4aAlbumName(m4aPath);
-    const std::string albumFolderName = sanitizeFolderName(rawAlbumName);
-    const std::filesystem::path albumFolderPath = libraryRoot / albumFolderName;
-
-    const bool albumFolderAlreadyExists = std::filesystem::exists(albumFolderPath);
-
-    if (!albumFolderAlreadyExists) {
-        std::filesystem::create_directory(albumFolderPath);
-
-        // 仅首次创建时提取封面
-        const std::filesystem::path folderCoverPath = albumFolderPath / "Cover.jpg";
-        if (extractCoverFromM4a(m4aPath, folderCoverPath)) {
-            applyMacFolderIcon(albumFolderPath, folderCoverPath);
-        }
-        // std::filesystem::remove(folderCoverPath);
-    }
-
-    // ===== 移动 m4a =====
-    const std::filesystem::path m4aDestinationPath =
-        makeUniqueDestination(albumFolderPath / m4aPath.filename());
-    std::filesystem::rename(m4aPath, m4aDestinationPath);
-
-    // ===== 处理 flac（如果存在）=====
-    if (std::filesystem::exists(flacPath) && std::filesystem::is_regular_file(flacPath)) {
-
-        const std::filesystem::path flacFolderPath = albumFolderPath / "flac";
-
-        if (!std::filesystem::exists(flacFolderPath)) {
-            std::filesystem::create_directory(flacFolderPath);
-        }
-
-        const std::filesystem::path flacDestinationPath =
-            makeUniqueDestination(flacFolderPath / flacPath.filename());
-
-        std::filesystem::rename(flacPath, flacDestinationPath);
-    }
-
-}
 
 void MyFfmpeg::cutTheAudio(const std::string &title, const double startTime, const double endTime) {
     if (startTime < 0.0) {
@@ -567,11 +336,19 @@ void MyFfmpeg::cutTheAudio(const std::string &title, const double startTime, con
         std::filesystem::remove(tempPath);
     }
 
+    if (std::filesystem::exists(outputPath)) {
+        std::filesystem::remove(outputPath);
+    }
+
     std::ostringstream cmd;
+
     cmd << "ffmpeg -y -i " << shellQuote(sourcePath.string())
         << " -ss " << startTime
         << " -to " << endTime
-        << " -c copy "
+        << " -map 0"
+        << " -map_metadata 0"
+        << " -c copy"
+        << " -movflags use_metadata_tags "
         << shellQuote(tempPath.string());
 
     Cmd::runCmdCapture(cmd.str());
@@ -601,6 +378,30 @@ void MyFfmpeg::autoConvertedToWavByFileName(const std::string &title) {
     Cmd::runCmdCapture(cmd.str());
 
     std::filesystem::rename(tempWavPath, wavPath);
+}
+
+void MyFfmpeg::autoConvertedToM4aByFileName(const std::string &title, const std::string& newTitle) {
+    const std::filesystem::path sourcePath = findAudioFileByTitle(title);
+
+    if (sourcePath.extension() == ".m4a") {
+        return;
+    }
+
+    const std::filesystem::path m4aPath = sourcePath.parent_path() / (newTitle + ".m4a");
+    const std::filesystem::path tempM4aPath = makeTempSiblingPath(m4aPath, ".tmp");
+
+    if (std::filesystem::exists(tempM4aPath)) {
+        std::filesystem::remove(tempM4aPath);
+    }
+
+    std::ostringstream cmd;
+    cmd << "ffmpeg -y -i " << shellQuote(sourcePath.string())
+        << " -vn -c:a aac -b:a 256k "
+        << shellQuote(tempM4aPath.string());
+
+    Cmd::runCmdCapture(cmd.str());
+
+    std::filesystem::rename(tempM4aPath, m4aPath);
 }
 
 void MyFfmpeg::applyFade(const std::string &title, double fadeInSeconds, double fadeOutSeconds) {

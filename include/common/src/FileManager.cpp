@@ -4,112 +4,65 @@
 
 #include "../FileManager.h"
 
-#include "Entity.h"
-#include "Logger.h"
-#include "Public.h"
+#include "MyPath.h"
 
-bool FileManager::ensure_path(const std::filesystem::path& p) {
-    std::filesystem::path dir = p.has_parent_path() ? p.parent_path() : std::filesystem::path();
 
-    std::error_code ec;
+std::string FileManager::copyToWorkspace(const std::filesystem::path& targetPath) {
+    const auto workspace = MyPath::getWorkspaceFolderPath();
+    std::filesystem::create_directories(workspace);
 
-    if (!dir.empty()) {
-        std::filesystem::create_directories(dir, ec);
-        if (ec) {
-            return false;
-        }
-    }
+    const auto destination = workspace / targetPath.filename();
+    std::filesystem::copy_file(
+            targetPath,
+            destination,
+            std::filesystem::copy_options::overwrite_existing
+    );
 
-    if (!std::filesystem::exists(p) && p.has_filename()) {
-        std::ofstream file(p);
-        if (!file) {
-            return false;
-        }
-    }
-
-    return std::filesystem::exists(p);
+    // 这个title不含后缀名
+    return targetPath.stem().string();
 }
 
-void FileManager::deleteFlacByName(const std::string& flacName) {
-    const std::string _flacName = flacName + ".flac";
-    const std::filesystem::path flacPath = Entity::getOutputFolderPath() / _flacName;
-
-    if (std::filesystem::exists(flacPath))
-        std::filesystem::remove(flacPath);
+void FileManager::clearWorkspace() {
+    std::filesystem::remove_all(MyPath::getWorkspaceFolderPath());
 }
 
-bool FileManager::isFlacExist(const std::string &flacName) {
-    const std::string _flacName = flacName + ".flac";
-    const std::filesystem::path flacPath = Entity::getOutputFolderPath() / _flacName;
+void FileManager::copyFileToFolder(const std::string& fileName, const std::filesystem::path &opf) {
+    // 把名为 fileName（包含后缀名）的文件复制到 opf，也就是目标文件夹中
+    const auto workspace = MyPath::getWorkspaceFolderPath();
 
-    return std::filesystem::exists(flacPath);
-}
-
-std::string FileManager::txt_kvPair_reader(const std::string &path, const std::string &k) {
-    ensure_path(path);
-
-    std::ifstream file(path);
-    if (!file.is_open())
-        return "";
-
-    std::string line;
-    while (std::getline(file, line)) {
-        auto pos = line.find('=');
-        if (pos == std::string::npos)
-            continue;
-
-        std::string key = line.substr(0, pos);
-        if (key != k)
-            continue;
-
-        return line.substr(pos + 1);
+    if (std::filesystem::exists(opf) && !std::filesystem::is_directory(opf)) {
+        throw std::runtime_error("Target path is not a directory: " + opf.string());
     }
 
-    return "";
-}
+    std::filesystem::create_directories(opf);
 
-void FileManager::txt_kvPair_writer(const std::string &path, const std::string &k, const std::string &v) {
-    ensure_path(path);
-
-    std::unordered_map<std::string, std::string> kv;
-
-    std::ifstream in(path);
-    std::string line;
-
-    while (std::getline(in, line)) {
-        auto pos = line.find('=');
-        if (pos == std::string::npos)
-            continue;
-
-        std::string key = line.substr(0, pos);
-        std::string value = line.substr(pos + 1);
-        kv[key] = value;
-    }
-    in.close();
-
-    kv[k] = v;
-
-    std::ofstream out(path, std::ios::out | std::ios::trunc);
-    if (!out.is_open())
+    if (!std::filesystem::exists(workspace) || !std::filesystem::is_directory(workspace)) {
         return;
-
-    for (const auto &[key, value]: kv) {
-        out << key << "=" << value << "\n";
     }
-}
 
-void FileManager::deleteJpg(const std::string& title) {
-    testLog("deleteJpg: 开始删除指定的 jpg 文件");
-    testLog("deleteJpg: 线程: " + title);
+    const std::filesystem::path sourceName(fileName);
+    const auto expectedFilename = sourceName.filename();
 
-    const std::filesystem::path jpgFolderPath = Entity::getOutputFolderPath();
-    const std::string titlePathStr = title + ".jpg";
-    const std::filesystem::path jpgPath = Entity::getOutputFolderPath() / titlePathStr;
+    for (const auto& entry : std::filesystem::directory_iterator(workspace)) {
+        if (!entry.is_regular_file()) {
+            continue;
+        }
 
+        const auto& path = entry.path();
+        if (path.filename() != expectedFilename) {
+            continue;
+        }
 
-    if (!std::filesystem::exists(jpgFolderPath) || !std::filesystem::is_directory(jpgFolderPath))
+        const auto target = opf / path.filename();
+        std::filesystem::copy_file(
+                path,
+                target,
+                std::filesystem::copy_options::overwrite_existing
+        );
+
         return;
+    }
 
-    testLog("deleteJpg: jpgPath: " + jpgPath.string());
-    std::filesystem::remove(jpgPath);
+    throw std::runtime_error("Source file not found in workspace: " + expectedFilename.string());
 }
+

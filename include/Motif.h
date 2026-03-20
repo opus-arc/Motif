@@ -4,9 +4,12 @@
 
 #ifndef MOTIF_MOTIF_H
 #define MOTIF_MOTIF_H
+#include <string>
 
 
 class Motif {
+public:
+    static void audioThumbnailing(const std::string& title);
 };
 
 

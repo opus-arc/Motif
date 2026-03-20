@@ -14,8 +14,6 @@ public:
 
     static std::filesystem::path getHomePath();
 
-    static std::filesystem::path getDefaultOutputPath();
-
     static std::filesystem::path getCachePath();
 
     static std::filesystem::path getCacheTxtPath();
@@ -26,7 +24,7 @@ public:
 
     static std::filesystem::path getLogoPath();
 
-    static std::filesystem::path getM4aFolderPath();
+    static std::filesystem::path getWorkspaceFolderPath();
 };
 
 

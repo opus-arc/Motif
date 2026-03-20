@@ -7,7 +7,7 @@
 #include <stdexcept>
 #include <fstream>
 
-bool MyPath::isTestingInClion = true;
+bool MyPath::isTestingInClion = false;
 
 namespace {
     void ensureCacheTxtInitialized(const std::filesystem::path& cachePath) {
@@ -71,7 +71,7 @@ std::filesystem::path MyPath::getCachePath() {
         return cachePath;
     }
 
-    const auto cachePath = getHomePath() / "Library" / "Caches" / "MusicCat";
+    const auto cachePath = getHomePath() / "Library" / "Caches" / "Motif";
     std::filesystem::create_directories(cachePath);
     ensureCacheTxtInitialized(cachePath);
     return cachePath;
@@ -91,7 +91,7 @@ std::filesystem::path MyPath::getLogPath() {
         return logPath;
     }
 
-    const auto logPath = getHomePath() / "Library" / "Logs" / "MusicCat";
+    const auto logPath = getHomePath() / "Library" / "Logs" / "Motif";
     std::filesystem::create_directories(logPath);
     return logPath;
 }
@@ -99,7 +99,7 @@ std::filesystem::path MyPath::getLogPath() {
 std::filesystem::path MyPath::getLogFilePath() {
     const auto logPath = getLogPath();
     std::filesystem::create_directories(logPath);
-    return logPath / "musiccat.log";
+    return logPath / "motif.log";
 }
 
 std::filesystem::path MyPath::getLogoPath() {
@@ -108,27 +108,22 @@ std::filesystem::path MyPath::getLogoPath() {
     if (isTestingInClion) {
         logoPath = getProjectPath().parent_path() / "logo" / "Mcat_cli_logo.txt";
     } else {
-        logoPath = getHomePath() / "Library" / "Application Support" / "MusicCat" / "logo" / "Mcat_cli_logo.txt";
+        logoPath = getHomePath() / "Library" / "Application Support" / "Motif" / "logo" / "Motif_cli_logo.txt";
     }
 
     ensureLogoFileInitialized(logoPath);
     return logoPath;
 }
 
-std::filesystem::path MyPath::getDefaultOutputPath() {
+
+
+std::filesystem::path MyPath::getWorkspaceFolderPath() {
     if (isTestingInClion) {
-        const auto outputPath = getProjectPath().parent_path() / "output";
-        std::filesystem::create_directories(outputPath);
-        return outputPath;
+        const auto m4aFolderPath = getProjectPath().parent_path() / "workspace";
+        std::filesystem::create_directories(m4aFolderPath);
+        return m4aFolderPath;
+    } else {
+        return getHomePath() / "Library" / "Application Support" / "Motif" / "workspace";
     }
 
-    const auto outputPath = getHomePath() / "Music" / "MusicCat";
-    std::filesystem::create_directories(outputPath);
-    return outputPath;
-}
-
-std::filesystem::path MyPath::getM4aFolderPath() {
-    const auto m4aFolderPath = getProjectPath().parent_path() / "m4a";
-    std::filesystem::create_directories(m4aFolderPath);
-    return m4aFolderPath;
 }

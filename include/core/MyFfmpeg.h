@@ -15,15 +15,7 @@ public:
 
     static void autoConvertedToWavByFileName(const std::string &title);
 
-    static void flacConvertedToM4aByFilename(const std::string& title);
-
-    static int getFlacDurationSecondsByFilename(const std::string& title);
-
-    static void applyCover(const std::string& title);
-
-    static int getFlacBitDepthByFilename(const std::string &title);
-
-    static void organizeAlbums(const std::string &title);
+    static void autoConvertedToM4aByFileName(const std::string &title, const std::string& newTitle);
 
     static void cutTheAudio(const std::string &title, double startTime, double endTime);
 

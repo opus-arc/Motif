@@ -1,344 +1,193 @@
-#define DR_WAV_IMPLEMENTATION
+/**
+ *  MusicCat CLI Entry
+ */
 
-#include "CommonsInit.h"
+#include <iostream>
+#include <string>
+#include <string_view>
+#include <Motif.h>
+#include <CommonsInit.h>
+#include <csignal>
+
+#include "FileManager.h"
 #include "Logger.h"
-#include "MyDrWav.h"
-#include "MyEigen.h"
 #include "MyFfmpeg.h"
-#include "MyFFT.h"
-#include <algorithm>
-#include <unordered_set>
-#include <chrono>
+#include "MyPath.h"
+#define MOTIF_VERSION "0.1.0"
 
-int main() {
-    std::cout << "Program starts.\n" << std::endl;
+std::atomic<bool> g_shouldExit = false;
 
-    const auto programStartTime = std::chrono::steady_clock::now();
-    auto stepTime = programStartTime;
+void signalHandler(int) {
+    g_shouldExit.store(true, std::memory_order_relaxed);
+}
 
-    const auto printElapsedMs = [&](const char* label) {
-        const auto now = std::chrono::steady_clock::now();
-        const auto stepMs = std::chrono::duration_cast<std::chrono::milliseconds>(now - stepTime).count();
-        const auto totalMs = std::chrono::duration_cast<std::chrono::milliseconds>(now - programStartTime).count();
+void help();
+void runMotifCommand(const std::string& audioPath, const std::string& opf);
 
-        std::cout << "[timer] " << label
-                  << " | step: " << stepMs << " ms"
-                  << " | total: " << totalMs << " ms"
-                  << std::endl;
+namespace {
+    constexpr std::string_view kAppName = "motif";
 
-        stepTime = now;
-    };
 
-    // ------------------------------------------------------------
-    // 0. 初始化日志等公共组件
-    // ------------------------------------------------------------
+    void printUnknownCommand(const std::string_view command) {
+        std::cerr << "Unknown command: " << command << "\n\n";
+        help();
+    }
+
+    void versionCommand() {
+        CommonsInit::TestAllCommons();
+        const std::string version = MOTIF_VERSION;
+        std::cout << kAppName << " " << version << std::endl;
+    }
+
+    void logCommand() {
+        CommonsInit::TestAllCommons();
+        Logger::printLog();
+    }
+
+} // namespace
+
+
+void help() {
+    std::cout << "Motif - Audio thumbnailing CLI\n\n";
+
+    std::cout << "Usage:\n";
+    std::cout << "  motif <audio.xxx> <opf>\n";
+    std::cout << "  motif <command>\n\n";
+
+    std::cout << "Commands:\n";
+    std::cout << "  log                  Print runtime logs\n";
+    std::cout << "  help                 Show this help message\n";
+    std::cout << "  zh                   Show Chinese help\n";
+    std::cout << "  ja                   Show Japanese help\n\n";
+
+    std::cout << "Notes:\n";
+    std::cout << "  When two file paths are provided, motif will run audio thumbnailing.\n";
+    std::cout << "  Example: motif input.wav output.wav\n";
+    std::cout << "  -h, --help           Show help message\n";
+    std::cout << "  -v, --version        Show program version\n";
+}
+
+void helpZh() {
+    std::cout << "Motif - 音频缩略图命令行工具\n\n";
+
+    std::cout << "用法:\n";
+    std::cout << "  motif <audio.xxx> <opf>\n";
+    std::cout << "  motif <命令>\n\n";
+
+    std::cout << "命令:\n";
+    std::cout << "  log                  查看运行日志\n";
+    std::cout << "  help                 显示英文帮助\n";
+    std::cout << "  zh                   显示中文帮助\n";
+    std::cout << "  ja                   显示日文帮助\n\n";
+
+    std::cout << "说明:\n";
+    std::cout << "  当传入两个文件路径时，motif 会执行音频缩略图分析。\n";
+    std::cout << "  示例: motif input.wav output.wav\n";
+    std::cout << "  -h, --help           显示帮助信息\n";
+    std::cout << "  -v, --version        显示版本号\n";
+}
+
+void helpJa() {
+    std::cout << "Motif - オーディオ縮約サムネイル CLI\n\n";
+
+    std::cout << "使い方:\n";
+    std::cout << "  motif <audio.xxx> <opf>\n";
+    std::cout << "  motif <command>\n\n";
+
+    std::cout << "コマンド:\n";
+    std::cout << "  log                  実行ログを表示\n";
+    std::cout << "  help                 英語ヘルプを表示\n";
+    std::cout << "  zh                   中国語ヘルプを表示\n";
+    std::cout << "  ja                   日本語ヘルプを表示\n\n";
+
+    std::cout << "説明:\n";
+    std::cout << "  2つのファイルパスを渡すと、motif は音声サムネイル解析を実行します。\n";
+    std::cout << "  例: motif input.wav output.wav\n";
+    std::cout << "  -h, --help           ヘルプを表示\n";
+    std::cout << "  -v, --version        バージョンを表示\n";
+}
+
+void runMotifCommand(const std::string& audioPath, const std::string& opf) {
     CommonsInit::TestAllCommons();
-    printElapsedMs("Step 0 完成");
 
-    // ------------------------------------------------------------
-    // 1. 读取音频文件，拿到原始浮点采样
-    // ------------------------------------------------------------
-    std::cout << "---------------------------------------------" << std::endl;
-    testLog("Step 1: 读取 wav，解析为浮点数离散信号");
+    std::cout << "audioPath:  " << audioPath << std::endl;
+    std::cout << "opf: " << opf << std::endl;
 
-    std::string title = "'Tis A Pity She Was A Whore";
+    // 为了避免在 mcat 遇到的那种线程问题 还是先清理再说吧
+    // 不过 cpp 的似乎都是自动检查清楚的，只要返回了就是已经确认执行完了
+    FileManager::clearWorkspace();
 
-    MyFfmpeg::autoConvertedToWavByFileName(title); // 自动格式转换
-    const M4a wav = MyDrWav::getM4a_float(title);
-    testLog("Step 1: 读取完成");
-    printElapsedMs("Step 1 完成");
+    // 把目标文件拷到工作区，顺便获取 title
+    const std::string title = FileManager::copyToWorkspace(audioPath);
 
-    // 后面几步会反复用到这两个参数，先集中定义
-    constexpr size_t fftSize = 2048;
-    constexpr size_t hopSize = 512;
-    constexpr size_t firstFrameStart = 0;
-    constexpr size_t downsampleFactor = 43;
+    // 执行核心逻辑
+    Motif::audioThumbnailing(title);
 
-    // ------------------------------------------------------------
-    // 2. 对整首音频逐帧提取 12 维 chroma，作为后续结构分析的基础特征
-    //    输出可以理解为：numFrames x 12
-    // ------------------------------------------------------------
-    std::cout << "---------------------------------------------" << std::endl;
-    testLog("Step 2: 计算整首音频的 chroma sequence");
-    const std::vector<std::vector<float>> chromaSequence = MyFFT::computeChromaSequence(
-        wav,
-        fftSize,
-        hopSize
-    );
+    // 拼凑完整的修改好的文件名字，下列涉及到几种不同阶段的处理阶段，都可以选择性地迁移到用户要求的位置
+    const std::string prepped = title + "_cut.m4a"; // 纯粹的音乐缩略图与动机
+    const std::string prepared = title + "_cut_fade.m4a"; // 加上淡入淡出的音乐缩略图与动机
+    const std::string motif = title + "_motif.m4a";
 
-    if (chromaSequence.empty()) {
-        testLog("Step 2 failed: chromaSequence 为空，程序结束");
-        return 1;
+    // 改个名
+    std::filesystem::copy_file(
+        MyPath::getWorkspaceFolderPath() / prepared,
+        MyPath::getWorkspaceFolderPath()/ motif
+        );
+
+
+    // 把制作好的文件移动到用户要求的目标文件夹下方
+    // 根据需要选择需要的菜品
+    FileManager::copyFileToFolder(motif, opf);
+}
+
+int main(const int argc, char *argv[]) {
+
+    std::signal(SIGINT, signalHandler); // Ctrl + C
+    std::signal(SIGTERM, signalHandler); // kill
+    // std::signal(SIGHUP, signalHandler);
+
+    if (argc < 2) {
+        help();
+        return 0;
     }
 
-    std::cout << "numFrames: " << chromaSequence.size() << std::endl;
-    std::cout << "chromaDim: " << chromaSequence[0].size() << std::endl;
-    testLog("Step 2: chroma sequence 计算完成");
-    printElapsedMs("Step 2 完成");
+    const std::string cmd = argv[1];
 
-    // ------------------------------------------------------------
-    // 3. 对 chroma 序列做时间平滑与下采样
-    //    目标：降低时间分辨率，减少后续 SSM 与扫描阶段的计算量
-    // ------------------------------------------------------------
-    std::cout << "---------------------------------------------" << std::endl;
-    testLog("Step 3: 对 chromaMatrix 做时间平滑与下采样");
-
-    const Eigen::MatrixXf chromaMatrix =
-        MyEigen::convertChromaSequenceToMatrix(chromaSequence);
-
-    const Eigen::MatrixXf smoothedChromaMatrix =
-        MyEigen::smoothFeatureMatrix(chromaMatrix, 5);
-
-    const Eigen::MatrixXf downsampledChromaMatrix =
-        MyEigen::downsampleFeatureMatrix(smoothedChromaMatrix, downsampleFactor);
-
-    std::cout << "downsampledFrames: " << downsampledChromaMatrix.rows() << std::endl;
-    std::cout << "featureDim: " << downsampledChromaMatrix.cols() << std::endl;
-    testLog("Step 3: 时间平滑与下采样完成");
-    printElapsedMs("Step 3 完成");
-
-    // ------------------------------------------------------------
-    // 4. 基于下采样后的 chroma 计算自相似矩阵（SSM）
-    //    这一步会把“时间-特征序列”变成“时间-时间相似关系”
-    // ------------------------------------------------------------
-    std::cout << "---------------------------------------------" << std::endl;
-    testLog("Step 4: 计算下采样后的 SSM");
-
-    const Eigen::MatrixXf ssm =
-        MyEigen::computeSelfSimilarityMatrix(downsampledChromaMatrix, downsampledChromaMatrix.rows());
-
-    std::cout << "ssmSize: " << ssm.rows() << " x " << ssm.cols() << std::endl;
-    testLog("Step 4: SSM 计算完成");
-    printElapsedMs("Step 4 完成");
-
-    // ------------------------------------------------------------
-    // 5. 对 SSM 做 threshold + penalty
-    //    保留高相似区域，压低弱相似区域，增强重复结构
-    // ------------------------------------------------------------
-    std::cout << "---------------------------------------------" << std::endl;
-    testLog("Step 5: 对 SSM 做 threshold + penalty");
-
-    const Eigen::MatrixXf processedSSM =
-        MyEigen::thresholdAndPenaltyMatrix(ssm, 0.90f, -2.0f);
-
-    size_t penaltyCount = 0;
-    size_t positiveCount = 0;
-    size_t diagonalCount = 0;
-
-    for (int i = 0; i < processedSSM.rows(); ++i) {
-        for (int j = 0; j < processedSSM.cols(); ++j) {
-            if (i == j) {
-                ++diagonalCount;
-                continue;
-            }
-
-            if (processedSSM(i, j) == -2.0f) {
-                ++penaltyCount;
-            } else {
-                ++positiveCount;
-            }
-        }
+    if (cmd == "help"
+        || cmd == "-h"
+        || cmd == "--help"
+        || cmd == "--zh"
+        || cmd == "zh"
+        || cmd == "ja"
+        || cmd == "--ja"
+    ) {
+        if (cmd == "zh" || cmd == "--zh")
+            helpZh();
+        else if (cmd == "ja" || cmd == "--ja" || cmd == "japan")
+            helpJa();
+        else
+            help();
+        return 0;
     }
 
-    const size_t totalEntries =
-        static_cast<size_t>(processedSSM.rows()) * static_cast<size_t>(processedSSM.cols());
-
-    std::cout << "processedSSM size: " << processedSSM.rows() << " x " << processedSSM.cols() << std::endl;
-    std::cout << "penaltyRatio: "
-              << static_cast<float>(penaltyCount) / static_cast<float>(totalEntries)
-              << std::endl;
-
-    MyEigen::saveMatrixToCSV(ssm, "ssm_raw.csv");
-    MyEigen::saveMatrixToCSV(processedSSM, "ssm_processed.csv");
-    testLog("Step 5: threshold + penalty 完成");
-    printElapsedMs("Step 5 完成");
-
-    // ------------------------------------------------------------
-    // 6. 准备时间换算工具
-    //    后面所有 segment 都定义在“下采样后的时间轴”上，需要换算成秒
-    // ------------------------------------------------------------
-    const float secondsPerProcessedFrame =
-        static_cast<float>(hopSize * downsampleFactor) /
-        static_cast<float>(wav.sampleRate);
-
-    const auto frameIndexToSeconds = [secondsPerProcessedFrame](const int frameIndex) -> float {
-        return static_cast<float>(frameIndex) * secondsPerProcessedFrame;
-    };
-
-    const auto printSegmentTimeInfo = [&frameIndexToSeconds](const char* label, const Segment& segment) {
-        const float startSec = frameIndexToSeconds(segment.start);
-        const float endSec = frameIndexToSeconds(segment.end);
-        const float durationSec = endSec - startSec;
-
-        std::cout << label << " frame range: ["
-                  << segment.start << ", " << segment.end << "]" << std::endl;
-        std::cout << label << " time range (sec): ["
-                  << startSec << ", " << endSec << "]" << std::endl;
-        std::cout << label << " duration (sec): " << durationSec << std::endl;
-    };
-
-
-    // ------------------------------------------------------------
-    // 7. 使用“粗到细”的多层采样策略扫描候选 segment
-    //    论文思路：先在稀疏网格上找高分候选，再只在这些候选附近做细化。
-    //    这样通常能显著减少 evaluateSegment 的调用次数。
-    // ------------------------------------------------------------
-    std::cout << "---------------------------------------------" << std::endl;
-    testLog("Step 7: 使用多层采样扫描 candidate segments");
-
-    const int scanLengthMin = 20;
-    const int scanLengthMax = 40;
-    const std::vector<int> gridSteps = {8, 4, 2, 1};
-    constexpr int anchorCount = 64;
-    constexpr int finalAnchorCount = 16;
-
-    struct CandidateScore {
-        Segment segment;
-        FitnessResult result;
-    };
-
-    std::vector<CandidateScore> evaluatedCandidates;
-    evaluatedCandidates.reserve(4096);
-
-    auto segmentKey = [](const Segment& seg) -> long long {
-        return (static_cast<long long>(seg.start) << 32) |
-               static_cast<unsigned int>(seg.end);
-    };
-
-    std::unordered_set<long long> visitedSegments;
-    visitedSegments.reserve(8192);
-
-    int skippedCount = 0;
-
-    auto tryEvaluateCandidate = [&](const Segment& candidate) {
-        if (candidate.start < 0 || candidate.end >= processedSSM.rows() || candidate.start > candidate.end) {
-            ++skippedCount;
-            return;
-        }
-
-        const long long key = segmentKey(candidate);
-        if (visitedSegments.find(key) != visitedSegments.end()) {
-            return;
-        }
-        visitedSegments.insert(key);
-
-        const FitnessResult result = MyEigen::evaluateSegment(processedSSM, candidate);
-        evaluatedCandidates.push_back(CandidateScore{candidate, result});
-    };
-
-    auto collectAnchors = [&](int maxCount) {
-        std::vector<CandidateScore> sorted = evaluatedCandidates;
-        std::sort(sorted.begin(), sorted.end(), [](const CandidateScore& a, const CandidateScore& b) {
-            return a.result.fitness > b.result.fitness;
-        });
-        if (static_cast<int>(sorted.size()) > maxCount) {
-            sorted.resize(maxCount);
-        }
-        return sorted;
-    };
-
-    // Level 1: 在最粗的二维网格上做初筛
-    const int firstGridStep = gridSteps.front();
-    for (int start = 0; start < processedSSM.rows(); start += firstGridStep) {
-        for (int length = scanLengthMin; length <= scanLengthMax; length += firstGridStep) {
-            const Segment candidate{start, start + length - 1};
-            tryEvaluateCandidate(candidate);
-        }
+    if (cmd == "-ver" || cmd == "-version" || cmd == "--version" || cmd == "-v") {
+        versionCommand();
+        return 0;
     }
 
-    // 后续层：只在高分 anchor 的局部邻域内细化
-    for (size_t levelIndex = 1; levelIndex < gridSteps.size(); ++levelIndex) {
-        const int step = gridSteps[levelIndex];
-        const std::vector<CandidateScore> anchors = collectAnchors(finalAnchorCount);
-
-        for (const CandidateScore& anchor : anchors) {
-            for (int deltaStart = -step; deltaStart <= step; deltaStart += step) {
-                for (int deltaLength = -step; deltaLength <= step; deltaLength += step) {
-                    const int refinedStart = anchor.segment.start + deltaStart;
-                    const int refinedLength = (anchor.segment.end - anchor.segment.start + 1) + deltaLength;
-
-                    if (refinedLength < scanLengthMin || refinedLength > scanLengthMax) {
-                        ++skippedCount;
-                        continue;
-                    }
-
-                    const Segment refinedCandidate{refinedStart, refinedStart + refinedLength - 1};
-                    tryEvaluateCandidate(refinedCandidate);
-                }
-            }
-        }
+    if (cmd == "log") {
+        logCommand();
+        return 0;
     }
 
-    bool hasBest = false;
-    FitnessResult bestResult{};
-    for (const CandidateScore& candidate : evaluatedCandidates) {
-        if (!hasBest || candidate.result.fitness > bestResult.fitness) {
-            bestResult = candidate.result;
-            hasBest = true;
-        }
+    if (argc == 3) {
+        const std::string audioPath = argv[1];
+        const std::string opf = argv[2];
+        runMotifCommand(audioPath, opf);
+        return 0;
     }
 
-    std::cout << "scanLength range: [" << scanLengthMin << ", " << scanLengthMax << "]" << std::endl;
-    std::cout << "gridSteps: [";
-    for (size_t i = 0; i < gridSteps.size(); ++i) {
-        std::cout << gridSteps[i];
-        if (i + 1 < gridSteps.size()) {
-            std::cout << ", ";
-        }
-    }
-    std::cout << "]" << std::endl;
-    std::cout << "anchorCount: " << anchorCount << std::endl;
-    std::cout << "evaluatedCandidates: " << evaluatedCandidates.size() << std::endl;
-    std::cout << "skippedCount: " << skippedCount << std::endl;
-    std::cout << "processedSSM total duration (sec): "
-              << frameIndexToSeconds(processedSSM.rows() - 1) << std::endl;
+    printUnknownCommand(cmd);
 
-    if (hasBest) {
-        const AccumulatedScoreResult bestAccResult =
-            MyEigen::computeAccumulatedScoreMatrixForSegment(processedSSM, bestResult.segment);
-
-        const PathFamily bestPathFamily =
-            MyEigen::computeOptimalPathFamily(bestAccResult.D);
-
-        const std::vector<Segment> bestSegmentFamily =
-            MyEigen::computeInducedSegmentFamily(bestPathFamily);
-
-        float repetitionDurationSum = 0.0f;
-        for (const Segment& seg : bestSegmentFamily) {
-            repetitionDurationSum += frameIndexToSeconds(seg.end) - frameIndexToSeconds(seg.start);
-        }
-
-        const float averageRepetitionDuration = bestSegmentFamily.empty()
-            ? 0.0f
-            : repetitionDurationSum / static_cast<float>(bestSegmentFamily.size());
-
-        std::cout << "bestResult.segment: ["
-                  << bestResult.segment.start << ", "
-                  << bestResult.segment.end << "]" << std::endl;
-        std::cout << "bestResult.score: " << bestResult.score << std::endl;
-        std::cout << "bestResult.normalizedScore: " << bestResult.normalizedScore << std::endl;
-        std::cout << "bestResult.coverage: " << bestResult.coverage << std::endl;
-        std::cout << "bestResult.normalizedCoverage: " << bestResult.normalizedCoverage << std::endl;
-        std::cout << "bestResult.pathFamilyLength: " << bestResult.pathFamilyLength << std::endl;
-        std::cout << "bestResult.fitness: " << bestResult.fitness << std::endl;
-        std::cout << "bestResult average repetition duration (sec): "
-                  << averageRepetitionDuration << std::endl;
-        printSegmentTimeInfo("bestResult", bestResult.segment);
-        std::cout << "bestSegmentFamily.size(): " << bestSegmentFamily.size() << std::endl;
-
-        const float bestStartSec = frameIndexToSeconds(bestResult.segment.start);
-        const float bestEndSec = frameIndexToSeconds(bestResult.segment.end);
-
-        MyFfmpeg::cutTheAudio(title, bestStartSec, bestEndSec);
-        // fadeOut 还是不要太长为好
-        MyFfmpeg::applyFade(title + "_cut", 0.3, 1);
-    } else {
-        std::cout << "No valid candidate segment found in multi-level scan." << std::endl;
-    }
-
-    testLog("Step 7: 多层采样 candidate scan 完成");
-    printElapsedMs("Step 7 完成");
-
-    printElapsedMs("程序结束前收尾完成");
-    return 0;
+    return 1;
 }

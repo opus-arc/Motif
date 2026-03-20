@@ -7,9 +7,7 @@
 #include <Logger.h>
 #include <FileManager.h>
 #include <MyPath.h>
-#include <TypeParser.h>
 
-#include "Entity.h"
 
 
 /**
@@ -38,7 +36,6 @@ void TestPathManager() {
  * 测试 FileManager 模块
  */
 void TestFileManager() {
-    FileManager::ensure_path(MyPath::getCacheTxtPath());
 
     const std::string logFilePath = MyPath::getLogPath();
     // Logger::info("Current logFile is in " + logFilePath);

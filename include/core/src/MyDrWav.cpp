@@ -17,7 +17,7 @@ M4a MyDrWav::getM4a_float(const std::string& title) {
         const std::string wavName = title + ".wav";
 
         float* samples = drwav_open_file_and_read_pcm_frames_f32(
-            std::filesystem::path(MyPath::getM4aFolderPath() / wavName).c_str(),
+            std::filesystem::path(MyPath::getWorkspaceFolderPath() / wavName).c_str(),
             &channels,
             &sampleRate,
             &totalFrameCount,
